@@ -23,7 +23,6 @@ import lombok.Getter;
  * @author fengshuonan
  * @Date 2017年1月10日 下午9:54:13
  */
-@Getter
 public enum ManagerStatus {
 
     OK("ENABLE", "启用"), FREEZED("LOCKED", "冻结"), DELETED("DELETED", "被删除");
@@ -47,5 +46,22 @@ public enum ManagerStatus {
             }
             return "";
         }
+    }
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

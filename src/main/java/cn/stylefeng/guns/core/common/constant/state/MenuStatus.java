@@ -23,7 +23,6 @@ import lombok.Getter;
  * @author fengshuonan
  * @Date 2017年1月22日 下午12:14:59
  */
-@Getter
 public enum MenuStatus {
 
     ENABLE("ENABLE", "启用"),
@@ -48,5 +47,22 @@ public enum MenuStatus {
             }
             return "";
         }
+    }
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
