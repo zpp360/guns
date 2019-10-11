@@ -26,7 +26,6 @@ import java.util.List;
  * @author fengshuonan
  * @date 2017年2月17日 下午8:25:14
  */
-@Data
 public class TreeviewNode implements Tree {
 
     /**
@@ -62,5 +61,38 @@ public class TreeviewNode implements Tree {
     @Override
     public void setChildrenNodes(List childrenNodes) {
         this.nodes = childrenNodes;
+    }
+
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public List<TreeviewNode> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<TreeviewNode> nodes) {
+        this.nodes = nodes;
     }
 }
