@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.shenjiang.mapper.FloorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.shenjiang.entity.Floor">
+        <id column="floor_id" property="floorId" />
+        <result column="floor_name" property="floorName" />
+        <result column="floor_img" property="floorImg" />
+        <result column="sort" property="sort" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        floor_id AS "floorId", floor_name AS "floorName", floor_img AS "floorImg", sort AS "sort"
+    </sql>
+
+
+    <select id="selectFloor" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from m_floor
+        order by sort ASC
+    </select>
+
+
+
+</mapper>
