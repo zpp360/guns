@@ -20,6 +20,10 @@
         select
         <include refid="Base_Column_List"/>
         from m_floor
+        where 1=1
+        <if test="floorName != null and floorName != ''">
+            and floor_name like CONCAT('%',#{floorName},'%')
+        </if>
         order by sort ASC
     </select>
 

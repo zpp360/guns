@@ -19,9 +19,9 @@ import java.util.Map;
 public class FloorService extends ServiceImpl<FloorMapper,Floor> {
 
 
-    public Page<Map<String,Object>> listFloor() {
+    public Page<Map<String,Object>> listFloor(String floorName) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.selectFloor(page);
+        return this.baseMapper.selectFloor(page,floorName);
     }
 
     public void addFloor(Floor floor) {

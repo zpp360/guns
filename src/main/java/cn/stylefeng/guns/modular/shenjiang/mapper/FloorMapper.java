@@ -12,6 +12,6 @@ import java.util.Map;
  */
 public interface FloorMapper extends BaseMapper<Floor> {
 
-    Page<Map<String, Object>> selectFloor(@Param("page") Page page);
+    Page<Map<String, Object>> selectFloor(@Param("page") Page page,@Param("floorName") String floorName);
 
 }
