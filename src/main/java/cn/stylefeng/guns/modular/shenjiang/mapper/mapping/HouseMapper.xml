@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.shenjiang.mapper.HouseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.shenjiang.entity.House">
+        <id column="house_id" property="houseId" />
+        <result column="house_name" property="houseName" />
+        <result column="floor_id" property="floorId" />
+        <result column="machine_id" property="machineId" />
+        <result column="house_img" property="houseImg" />
+        <result column="sort" property="sort" />
+        <result column="ip" property="ip" />
+        <result column="port" property="port" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        house_id AS "houseId", house_name AS "houseName", floor_id AS "floorId", machine_id AS "machineId", house_img AS "houseImg", sort AS "sort", ip AS "ip", port AS "port"
+    </sql>
+
+
+    <select id="selectHouse" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from m_house
+        where 1=1
+        <if test="houseName != null and houseName != ''">
+            and house_name like CONCAT('%',#{houseName},'%')
+        </if>
+        order by sort ASC
+    </select>
+
+
+
+</mapper>

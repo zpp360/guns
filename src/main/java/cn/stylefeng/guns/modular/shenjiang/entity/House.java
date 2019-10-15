@@ -22,10 +22,19 @@ public class House implements Serializable {
     private String houseImg;
 
     @TableField("floor_id")
-    private String floorId;
+    private Integer floorId;
+
+    @TableField("machine_id")
+    private String machineId;
 
     @TableField("sort")
-    private int sort;
+    private Integer sort;
+
+    @TableField("ip")
+    private String ip;
+
+    @TableField("port")
+    private Integer port;
 
     public String getHouseId() {
         return houseId;
@@ -51,19 +60,43 @@ public class House implements Serializable {
         this.houseImg = houseImg;
     }
 
-    public String getFloorId() {
+    public Integer getFloorId() {
         return floorId;
     }
 
-    public void setFloorId(String floorId) {
+    public void setFloorId(Integer floorId) {
         this.floorId = floorId;
     }
 
-    public int getSort() {
+    public String getMachineId() {
+        return machineId;
+    }
+
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
+    }
+
+    public Integer getSort() {
         return sort;
     }
 
-    public void setSort(int sort) {
+    public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }
