@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.shenjiang.mapper.MachineMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.shenjiang.entity.Machine">
+        <id column="machine_id" property="machineId" />
+        <result column="machine_name" property="machineName" />
+        <result column="machine_function" property="machineFunction" />
+        <result column="machine_img" property="machineImg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        machine_id as "machineId", machine_name as "machineName", machine_function as "machineFunction", machine_img as "machineImg"
+    </sql>
+
+
+    <select id="selectMachine" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from m_machine
+        where 1=1
+        <if test="machineName != null and machineName != ''">
+            and machine_name like CONCAT('%',#{machineName},'%')
+        </if>
+    </select>
+</mapper>

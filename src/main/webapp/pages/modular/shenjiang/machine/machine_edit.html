@@ -1,0 +1,57 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/shenjiang/machine/machine_edit.js?v=1"]}){
+<style type="text/css">
+    .layui-upload-list{
+        margin-left: 110px;
+    }
+    #imgShow{
+        width: 92px;
+        height: 92px;
+        margin: 0 10px 10px 0px;
+    }
+
+</style>
+<form id="machineForm" lay-filter="machineForm" class="layui-form model-form" style="max-width: 700px;">
+
+
+         <input type="hidden" name="machineId"/>
+         <input type="hidden" name="machineFunction">
+         <div class="layui-form-item">
+             <label class="layui-form-label">设备名称<span style="color: red;">*</span></label>
+             <div class="layui-input-block">
+                 <input id="machineName" name="machineName" maxlength="30" placeholder="请输入设备名称" type="text" class="layui-input"
+                        lay-verify="required" required/>
+             </div>
+         </div>
+         <div class="layui-form-item">
+             <label class="layui-form-label">设备功能<span style="color: red;">*</span></label>
+             <div class="layui-input-block">
+                 <input type="checkbox" name="function[hot]" title="加热" lay-filter="function">
+                 <input type="checkbox" name="function[cool]" title="制冷" lay-filter="function">
+                 <input type="checkbox" name="function[clearwet]" title="除湿" lay-filter="function">
+                 <input type="checkbox" name="function[addwet]" title="加湿" lay-filter="function">
+                 <input type="checkbox" name="function[disinfect]" title="消毒" lay-filter="function">
+                 <input type="checkbox" name="function[purification]" title="净化" lay-filter="function">
+             </div>
+         </div>
+         <div class="layui-form-item">
+             <label class="layui-form-label">设备图标<span style="color: red;">*</span></label>
+             <div class="layui-upload">
+                 <button type="button" class="layui-btn" id="uploadImg">上传设备图标</button>
+                 <div class="layui-upload-list">
+                     <img class="layui-upload-img" id="imgShow">
+                     <p id="imgText"></p>
+                 </div>
+             </div>
+             <input type="hidden" id="machineImg" name="machineImg" placeholder="" type="text" class="layui-input" lay-verify="" />
+         </div>
+
+
+
+    <div class="layui-form-item text-right">
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>更新</button>
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog" id="backupPage">返回</button>
+    </div>
+</form>
+
+
+@}

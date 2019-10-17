@@ -42,7 +42,7 @@ public class NettyServer implements  Runnable{
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .localAddress(new InetSocketAddress("127.0.0.1",2000))
+                    .localAddress(new InetSocketAddress("192.168.0.110",2000))
                     .option(ChannelOption.SO_SNDBUF, 16*1024)
                     .option(ChannelOption.SO_RCVBUF, 16*1024)
                     .option(ChannelOption.SO_KEEPALIVE, true)
