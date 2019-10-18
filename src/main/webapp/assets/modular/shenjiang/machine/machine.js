@@ -65,7 +65,7 @@ layui.use(['table', 'ax','admin'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加',
+            title: '添加设备',
             content: Feng.ctxPath + '/machine/machine_add',
             end: function () {
                 admin.getTempData('formOk') && table.reload(Machine.tableId);
@@ -77,7 +77,7 @@ layui.use(['table', 'ax','admin'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '编辑',
+            title: '编辑设备',
             content: Feng.ctxPath + '/machine/machine_edit?machineId=' + data.machineId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(Machine.tableId);

@@ -22,11 +22,17 @@ import cn.stylefeng.guns.core.common.constant.cache.CacheKey;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import cn.stylefeng.guns.core.common.constant.state.MenuStatus;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
+import cn.stylefeng.guns.modular.shenjiang.entity.Floor;
+import cn.stylefeng.guns.modular.shenjiang.entity.Machine;
+import cn.stylefeng.guns.modular.shenjiang.mapper.FloorMapper;
+import cn.stylefeng.guns.modular.shenjiang.mapper.MachineMapper;
+import cn.stylefeng.guns.modular.shenjiang.service.FloorService;
 import cn.stylefeng.guns.modular.system.entity.*;
 import cn.stylefeng.guns.modular.system.mapper.*;
 import cn.stylefeng.roses.core.util.SpringContextHolder;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
@@ -51,6 +57,9 @@ public class ConstantFactory implements IConstantFactory {
     private UserMapper userMapper = SpringContextHolder.getBean(UserMapper.class);
     private MenuMapper menuMapper = SpringContextHolder.getBean(MenuMapper.class);
     private NoticeMapper noticeMapper = SpringContextHolder.getBean(NoticeMapper.class);
+
+    private FloorMapper floorMapper = SpringContextHolder.getBean(FloorMapper.class);
+    private MachineMapper machineMapper = SpringContextHolder.getBean(MachineMapper.class);
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -329,5 +338,29 @@ public class ConstantFactory implements IConstantFactory {
         return parentDeptIds;
     }
 
+
+    @Override
+    public String getFloorName(String floorId){
+        if(StringUtils.isEmpty(floorId)){
+            return "";
+        }
+        Floor floor = floorMapper.selectById(floorId);
+        if(floor == null){
+            return "";
+        }
+        return floor.getFloorName();
+    }
+
+    @Override
+    public String getMachineName(String machineId) {
+        if(StringUtils.isEmpty(machineId)){
+            return "";
+        }
+        Machine machine = machineMapper.selectById(machineId);
+        if(machine == null){
+            return "";
+        }
+        return machine.getMachineName();
+    }
 
 }

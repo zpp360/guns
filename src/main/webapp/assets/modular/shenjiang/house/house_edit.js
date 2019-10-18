@@ -23,13 +23,12 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
             });
         }
         ,done: function(res){
-            console.log(res)
             //如果上传失败
             if(res.code > 0){
-                return layer.msg('上传失败');
+                return layer.msg('上传失败' + res.msg);
             }
             //上传成功
-            $("#floorImg").val(res.img_path);
+            $("#houseImg").val(res.img_path);
         }
         ,error: function(){
             //演示失败状态，并实现重传
@@ -44,21 +43,43 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     // 让当前iframe弹层高度适应
     admin.iframeAuto();
 
-    var ajax = new $ax(Feng.ctxPath + "/floor/getFloorInfo?floorId=" + Feng.getUrlParam("floorId"));
+    //渲染楼层
+    var ajax = new $ax(Feng.ctxPath + "/house/selectFloor", function (data) {
+        $("#floorId").append(data)
+    })
+    ajax.start();
+    //选择设备
+    var ajax = new $ax(Feng.ctxPath + "/house/selectMachine", function (data) {
+        $("#machineId").append(data)
+    })
+    ajax.start();
+    //重新渲染select
+    form.render('select');
+
+    var ajax = new $ax(Feng.ctxPath + "/house/getHouseInfo?houseId=" + Feng.getUrlParam("houseId"));
     var result = ajax.start();
     //回显图片
-    $("#imgShow").attr("src",result.data.floorImg );
-    form.val('floorForm', result.data);
+    if(result.data.houseImg!=""){
+        $("#imgShow").attr("src",result.data.houseImg );
+    }
+    form.val('houseForm', result.data);
 
     // 添加表单验证方法
     form.verify({
-        sort: [/^[\d]{1,3}$/, '排序号为1-3位正整数']
+        sort: [/^[\d]{1,3}$/, '排序号为1-3位正整数'],
+        ip:[/^(\d|[1-9]\d|1\d{2}|2[0-5][0-5])\.(\d|[1-9]\d|1\d{2}|2[0-5][0-5])\.(\d|[1-9]\d|1\d{2}|2[0-5][0-5])\.(\d|[1-9]\d|1\d{2}|2[0-5][0-5])$/,'请输入正确的IP格式'],
+        port:function (value) {
+            var exp=/^(\d)+$/g;
+            if(!(exp.test(value) && parseInt(value)<=65535 && parseInt(value)>=0)){
+                return "请输入正确的端口号";
+            }
+        }
     });
 
-    // 表单提交事件
+
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/floor/edit", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/house/edit", function (data) {
             Feng.success("修改成功！");
 
             //传给上个页面，刷新table用

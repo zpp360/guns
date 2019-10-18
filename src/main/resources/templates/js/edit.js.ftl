@@ -26,7 +26,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
             console.log(res)
             //如果上传失败
             if(res.code > 0){
-                return layer.msg('上传失败');
+                return layer.msg('上传失败' + res.msg);
             }
             //上传成功
             $("#${table.entityPath}Img").val(res.img_path);
@@ -47,7 +47,9 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     var ajax = new $ax(Feng.ctxPath + "/${table.entityPath}/get${entity}Info?${table.entityPath}Id=" + Feng.getUrlParam("${table.entityPath}Id"));
     var result = ajax.start();
     //回显图片
-    $("#imgShow").attr("src",result.data.${table.entityPath}Img );
+    if(result.data.${table.entityPath}Img!=""){
+        $("#imgShow").attr("src",result.data.${table.entityPath}Img );
+    }
     form.val('${table.entityPath}Form', result.data);
 
     // 添加表单验证方法

@@ -23,7 +23,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">楼层<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <select id="floorId" name="floorName" lay-verify="required">
+            <select id="floorId" name="floorId" lay-verify="required">
                 <option value="">请选择楼层</option>
             </select>
         </div>
@@ -32,8 +32,9 @@
     <div class="layui-form-item">
         <label class="layui-form-label">设备<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input id="machineId" name="floorName" placeholder="请输入设备名称" type="text" class="layui-input"
-                   lay-verify="required" required/>
+            <select id="machineId" name="machineId" lay-verify="required">
+                <option value="">请选择设备</option>
+            </select>
         </div>
     </div>
 
@@ -56,11 +57,11 @@
     <div class="layui-form-item">
         <label class="layui-form-label">排序<span style="color: red;">*</span></label>
         <div class="layui-input-block">
-            <input id="sort" name="sort" style="width: 120px;" placeholder="请输入排序号" type="number" class="layui-input" lay-verify="sort">
+            <input id="sort" name="sort" style="width: 120px;" placeholder="请输入排序号" type="number" class="layui-input" lay-verify="required|sort">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">平面图<span style="color: red;">*</span></label>
+        <label class="layui-form-label">平面图</label>
         <div class="layui-upload">
             <button type="button" class="layui-btn" id="uploadImg">上传平面图</button>
             <div class="layui-upload-list">
@@ -68,7 +69,7 @@
                 <p id="imgText"></p>
             </div>
         </div>
-        <input type="hidden" id="floorImg" name="floorImg" placeholder="请输入平面图" type="text" class="layui-input" lay-verify="" />
+        <input type="hidden" id="houseImg" name="houseImg" placeholder="请输入平面图" type="text" class="layui-input" lay-verify="" />
     </div>
     <div class="layui-form-item text-right">
         <button class="layui-btn" lay-filter="btnSubmit" lay-submit>保存</button>

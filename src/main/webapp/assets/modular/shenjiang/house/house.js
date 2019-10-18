@@ -23,7 +23,7 @@ layui.use(['table', 'ax','admin'], function () {
             {field: 'machineName', sort: false, title: '设备'},
             {field: 'ip', sort: false, title: 'IP'},
             {field: 'port', sort: false, title: '端口'},
-            {field: 'sort', sort: true, title: '排序'},
+            {field: 'sort', sort: true, title: '排序', width:150,align:'center'},
             {align: 'center', toolbar: '#tableBar', title: '操作'}
         ]];
     };
@@ -55,10 +55,10 @@ layui.use(['table', 'ax','admin'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '添加楼层',
+            title: '添加库房',
             content: Feng.ctxPath + '/house/house_add',
             end: function () {
-                admin.getTempData('formOk') && table.reload(house.tableId);
+                admin.getTempData('formOk') && table.reload(House.tableId);
             }
         });
     }
@@ -67,10 +67,10 @@ layui.use(['table', 'ax','admin'], function () {
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
-            title: '编辑楼层',
+            title: '编辑库房',
             content: Feng.ctxPath + '/house/house_edit?houseId=' + data.houseId,
             end: function () {
-                admin.getTempData('formOk') && table.reload(house.tableId);
+                admin.getTempData('formOk') && table.reload(House.tableId);
             }
         });
     }
@@ -78,7 +78,7 @@ layui.use(['table', 'ax','admin'], function () {
     House.search = function () {
         var queryData = {};
         queryData['houseName'] = $("#houseName").val();
-        table.reload(house.tableId, {where: queryData});
+        table.reload(House.tableId, {where: queryData});
     }
 
     //删除

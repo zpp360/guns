@@ -23,7 +23,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
         ,done: function(res){
             //如果上传失败
             if(res.code > 0){
-                return layer.msg('上传失败');
+                return layer.msg('上传失败' + res.msg);
             }
             //上传成功
             $("#${table.entityPath}Img").val(res.img_path);

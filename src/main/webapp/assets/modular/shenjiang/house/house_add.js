@@ -6,12 +6,6 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     var admin = layui.admin;
     var upload = layui.upload;
 
-    //渲染楼层
-    var ajax = new $ax(Feng.ctxPath + "/floor/add", function (data) {
-
-    })
-    ajax.start();
-
     //普通图片上传
     var uploadInst = upload.render({
         elem: '#uploadImg'
@@ -27,13 +21,12 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
             });
         }
         ,done: function(res){
-            console.log(res)
             //如果上传失败
             if(res.code > 0){
-                return layer.msg('上传失败');
+                return layer.msg('上传失败' + res.msg);
             }
             //上传成功
-            $("#floorImg").val(res.img_path);
+            $("#houseImg").val(res.img_path);
         }
         ,error: function(){
             //演示失败状态，并实现重传
@@ -60,9 +53,23 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
         }
     });
 
+
+    //渲染楼层
+    var ajax = new $ax(Feng.ctxPath + "/house/selectFloor", function (data) {
+        $("#floorId").append(data)
+    })
+    ajax.start();
+    //选择设备
+    var ajax = new $ax(Feng.ctxPath + "/house/selectMachine", function (data) {
+        $("#machineId").append(data)
+    })
+    ajax.start();
+    //重新渲染select
+    form.render('select');
+
     // 表单提交事件
     form.on('submit(btnSubmit)', function (data) {
-        var ajax = new $ax(Feng.ctxPath + "/floor/add", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/house/add", function (data) {
             Feng.success("添加成功！");
 
             //传给上个页面，刷新table用

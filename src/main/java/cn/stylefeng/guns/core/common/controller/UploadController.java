@@ -51,12 +51,12 @@ public class UploadController extends BaseController {
             fileExt = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
             if (!Constants.JPG.equals(fileExt) && !Constants.JPEG.equals(fileExt) && !Constants.PNG.equals(fileExt) && !Constants.GIF.equals(fileExt)
                     && !Constants.BMP.equals(fileExt)) {
-                fileExtError = "nonsupport_type";
+                fileExtError = "不支持的文件格式";
                 data.put("code","1");
                 data.put("msg",fileExtError);
                 return data;
             } else if (picSize > Constants.ONE_HUNDRED_MB) {
-                fileExtError = "out_size";
+                fileExtError = "图片最大100M";
                 data.put("code","2");
                 data.put("msg",fileExtError);
                 return data;

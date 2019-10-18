@@ -53,17 +53,18 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     var length =  $("input[name^='function']").length
     for(var i=0;i<length;i++){
         if(fuc[i]=="1"){
-            $("input[name^='function']")[i].attr("checked",true)
+            $($("input[name^='function']")[i]).attr("checked",true)
         }
     }
-    $("input[name^='function']").each(function () {
-        console.log($(this).index())
-    })
     form.val('machineForm', result.data);
 
     // 添加表单验证方法
     form.verify({
-        sort: [/^[\d]{1,3}$/, '排序号为1-3位正整数']
+        imgRequired: function (value) {
+            if(value==null || value==''){
+                return "请上传设备图标"
+            }
+        }
     });
 
     //点击复选框，给machineFunction赋值
