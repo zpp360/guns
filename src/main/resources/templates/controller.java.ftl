@@ -4,8 +4,10 @@ package ${package.Controller};
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
-import cn.stylefeng.guns.modular.shenjiang.entity.${entity};
-import cn.stylefeng.guns.modular.shenjiang.service.${entity}Service;
+import cn.stylefeng.guns.core.shiro.ShiroKit;
+import cn.stylefeng.guns.core.shiro.ShiroUser;
+import cn.stylefeng.guns.modular.shuheng.entity.${entity};
+import cn.stylefeng.guns.modular.shuheng.service.${entity}Service;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
@@ -52,7 +54,7 @@ public class ${table.controllerName} {
 </#if>
 </#if>
 
-   private String PREFIX = "/modular/shenjiang/${table.entityPath}/";
+   private String PREFIX = "/modular/shuheng/${table.entityPath}/";
 
    @Autowired
    private ${table.serviceName}  ${table.entityPath}Service;
@@ -77,9 +79,14 @@ public class ${table.controllerName} {
    @RequestMapping(value = "/add")
    @ResponseBody
    public ResponseData add(${entity} ${table.entityPath}) {
+      ShiroUser user = ShiroKit.getUser();
       if (${table.entityPath} == null) {
          throw new RequestEmptyException();
       }
+      ${table.entityPath}.setCreateUser(user.getId());
+      ${table.entityPath}.setCreateTime(new Date());
+      ${table.entityPath}.setUpdateUser(user.getId());
+      ${table.entityPath}.setUpdateTime(new Date());
       this.${table.entityPath}Service.save(${table.entityPath});
       return SUCCESS_TIP;
    }
@@ -99,9 +106,14 @@ public class ${table.controllerName} {
    @RequestMapping(value = "/edit")
    @ResponseBody
    public ResponseData edit(${entity} ${table.entityPath}){
+      ShiroUser user = ShiroKit.getUser();
       if (${table.entityPath} == null) {
          throw new RequestEmptyException();
       }
+      ${table.entityPath}.setCreateUser(user.getId());
+      ${table.entityPath}.setCreateTime(new Date());
+      ${table.entityPath}.setUpdateUser(user.getId());
+      ${table.entityPath}.setUpdateTime(new Date());
       this.${table.entityPath}Service.updateById(${table.entityPath});
       return SUCCESS_TIP;
    }

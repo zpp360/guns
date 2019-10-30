@@ -114,4 +114,9 @@ public class UserAuthServiceServiceImpl implements UserAuthService {
         return new SimpleAuthenticationInfo(shiroUser, credentials, credentialsSalt, realmName);
     }
 
+    @Override
+    public List<String> findPermissionsByUserId(Long userId) {
+        return menuMapper.findPermissionsByUserId(userId);
+    }
+
 }

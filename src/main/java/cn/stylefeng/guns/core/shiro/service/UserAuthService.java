@@ -62,4 +62,10 @@ public interface UserAuthService {
      */
     SimpleAuthenticationInfo info(ShiroUser shiroUser, User user, String realmName);
 
+    /**
+     * 根据用户id获取自定义权限
+     * @param id
+     * @return
+     */
+    List<String> findPermissionsByUserId(Long id);
 }

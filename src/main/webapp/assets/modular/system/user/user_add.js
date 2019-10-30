@@ -51,6 +51,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     // 渲染时间选择框
     laydate.render({
         elem: '#birthday'
+        ,trigger : 'click'
     });
 
     // 表单提交事件

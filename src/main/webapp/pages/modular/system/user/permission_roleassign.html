@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>${systemName}</title>
+    <meta name="description" content="${systemName}">
+    <meta name="author" content="stylefeng">
+
+    <link rel="stylesheet" href="${ctxPath}/assets/common/layui/css/layui.css"/>
+    <link href="${ctxPath}/assets/expand/plugins/ztree/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        #plaza{
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="layui-fluid">
+    <form class="layui-form model-form" style="padding-top: 20px;">
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="margin-left: 0px;">
+                <input type="checkbox" name="isPlazaAdmin" lay-filter="isPlazaAdmin" title="继承管理员权限">
+            </div>
+            <label style="color: red">选中继承管理员权限，该用户继承管理员所有权限</label>
+        </div>
+    </form>
+    <div class="layui-row" style="margin-top:15px;background: #f2f7f8;padding: 20px;">
+        <ul id="zTree" class="ztree"></ul>
+    </div>
+    <div class="layui-row" style="background: #CFD4D5;padding: 10px;">
+        <div style="text-align: center;">
+            <button class="layui-btn layui-btn-sm" id="saveButton">保存</button>
+            <button class="layui-btn layui-btn-sm layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
+        </div>
+    </div>
+</div>
+
+@/* 加入contextPath属性和session超时的配置 */
+<script type="text/javascript">
+    var Feng = {
+        ctxPath: "",
+        addCtx: function (ctx) {
+            if (this.ctxPath === "") {
+                this.ctxPath = ctx;
+            }
+        }
+    };
+    Feng.addCtx("${ctxPath}");
+</script>
+<script type="text/javascript" src="${ctxPath}/assets/common/layui/layui.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/common/js/common.js"></script>
+
+<!--其他插件js-->
+<script type="text/javascript" src="${ctxPath}/assets/expand/plugins/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${ctxPath}/assets/expand/plugins/ztree/jquery.ztree.all.min.js"></script>
+
+<script type="text/javascript">
+
+    layui.use(['form','ztree','ax'], function () {
+        var $ZTree = layui.ztree;
+        var $ax = layui.ax;
+        var $ = layui.$;
+        var form = layui.form;
+
+        var ZTreeDlg = {
+            index: parent.layer.getFrameIndex(window.name)
+        };
+
+        $("#saveButton").bind("click", function () {
+            var ajax = new $ax(Feng.ctxPath + "/mgr/setPermission", function (data) {
+                Feng.success("分配权限成功!");
+                parent.layer.close(ZTreeDlg.index);
+            }, function (data) {
+                Feng.error("分配权限失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("userId", "${userId}");
+            //判断继承管理员权限是否选中
+            var checked = $("input[name='isPlazaAdmin']").is(":checked");
+            if(checked){
+                ajax.set("isPlazaAdmin","1")
+                ajax.set("menuIds","")
+            }else{
+                //未选中，获取菜单选中节点
+                var ids = Feng.zTreeCheckedNodes("zTree");
+                ajax.set("isPlazaAdmin","0")
+                ajax.set("menuIds",ids)
+            }
+            ajax.start();
+        });
+
+        var setting = {
+            check: {
+                enable: true,
+                chkboxType: {
+                    "Y": "ps",
+                    "N": "ps"
+                }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+
+        var ztree = new $ZTree("zTree", "/mgr/menuTreeByUserId/${userId}");
+        ztree.setSettings(setting);
+        ztree.init();
+
+        var ajax = new $ax(Feng.ctxPath + "/mgr/getUserInfo", function (data) {
+            if(data.data.plazaAdmin){
+                $("input[name='isPlazaAdmin']").attr("checked","checked")
+                form.render('checkbox');
+                $("#zTree").hide()
+            }
+        }, function (data) {
+            Feng.error("获取用户信息失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set("userId", "${userId}");
+        ajax.start();
+
+        form.on('checkbox(isPlazaAdmin)',function (data) {
+            if($(this).is(":checked")){
+                //继承管理员权限
+                $("#zTree").hide()
+            }else{
+                $("#zTree").show()
+            }
+        })
+
+    });
+
+
+
+
+</script>
+
+</body>
+
+</html>

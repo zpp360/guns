@@ -20,6 +20,7 @@ layui.use(['table', 'ax','admin'], function () {
             <#list table.fields as field>
             <#if field.keyFlag>
             {field: '${field.propertyName}', hide: true, title: '${field.comment}'},
+            <#elseif "create_time"==field.name || "create_user"==field.name ||"update_user"==field.name>
             <#else>
             {field: '${field.propertyName}', sort: false, title: '${field.comment}'},
             </#if>

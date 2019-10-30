@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/shenjiang/${table.entityPath}/${table.entityPath}_add.js"]}){
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/shuheng/${table.entityPath}/${table.entityPath}_add.js"]}){
 <style type="text/css">
 
 </style>
@@ -28,6 +28,7 @@
                 <input id="sort" name="sort" placeholder="请输入排序号码" style="width:120px" maxlength="3" type="number" class="layui-input" lay-verify="sort">
             </div>
         </div>
+    <#elseif "create_time"==field.name || "create_user"==field.name || "update_time"==field.name ||"update_user"==field.name>
     <#else>
         <div class="layui-form-item">
             <label class="layui-form-label">${field.comment}<span style="color: red;">*</span></label>

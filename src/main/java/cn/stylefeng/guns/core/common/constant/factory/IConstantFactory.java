@@ -153,4 +153,10 @@ public interface IConstantFactory {
      */
     String getMachineName(String machineId);
 
+    /**
+     * 获取纪念馆名称
+     * @param plazaId
+     * @return
+     */
+    Object getPlazaName(Long plazaId);
 }

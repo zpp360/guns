@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.shuheng.mapper.PlazaMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.shuheng.entity.Plaza">
+        <id column="plaza_id" property="plazaId" />
+        <result column="plaza_name" property="plazaName" />
+        <result column="plaza_tel" property="plazaTel" />
+        <result column="plaza_addres" property="plazaAddres" />
+        <result column="plaza_desc" property="plazaDesc" />
+        <result column="plaza_img" property="plazaImg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        plaza_id as plazaId, plaza_name as plazaName, plaza_tel as plazaTel, plaza_addres as plazaAddres, plaza_desc as plazaDesc, update_time as updateTime
+    </sql>
+
+
+    <select id="selectPlaza" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from m_plaza
+        where 1=1
+        <if test="plazaName != null and plazaName != ''">
+            and plaza_name like CONCAT('%',#{plazaName},'%')
+        </if>
+    </select>
+</mapper>

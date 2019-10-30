@@ -56,6 +56,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
     // 渲染时间选择框
     laydate.render({
         elem: '#birthday'
+        ,trigger : 'click'
     });
 
     // 表单提交事件
@@ -69,7 +70,8 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax'], function () {
             //关掉对话框
             admin.closeThisDialog();
         }, function (data) {
-            Feng.error("修改成功！" + data.responseJSON.message)
+            Feng.error("修改失败！" + data.responseJSON.message)
+            return false
         });
         ajax.set(data.field);
         ajax.start();

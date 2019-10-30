@@ -27,6 +27,8 @@ import cn.stylefeng.guns.modular.shenjiang.entity.Machine;
 import cn.stylefeng.guns.modular.shenjiang.mapper.FloorMapper;
 import cn.stylefeng.guns.modular.shenjiang.mapper.MachineMapper;
 import cn.stylefeng.guns.modular.shenjiang.service.FloorService;
+import cn.stylefeng.guns.modular.shuheng.entity.Plaza;
+import cn.stylefeng.guns.modular.shuheng.mapper.PlazaMapper;
 import cn.stylefeng.guns.modular.system.entity.*;
 import cn.stylefeng.guns.modular.system.mapper.*;
 import cn.stylefeng.roses.core.util.SpringContextHolder;
@@ -60,6 +62,10 @@ public class ConstantFactory implements IConstantFactory {
 
     private FloorMapper floorMapper = SpringContextHolder.getBean(FloorMapper.class);
     private MachineMapper machineMapper = SpringContextHolder.getBean(MachineMapper.class);
+
+
+    private PlazaMapper plazaMapper = SpringContextHolder.getBean(PlazaMapper.class);
+
 
     public static IConstantFactory me() {
         return SpringContextHolder.getBean("constantFactory");
@@ -361,6 +367,20 @@ public class ConstantFactory implements IConstantFactory {
             return "";
         }
         return machine.getMachineName();
+    }
+
+    @Override
+    @Cacheable(value = Cache.CONSTANT, key = "'" + CacheKey.PLAZA_NAME + "'+#plazaId")
+    public Object getPlazaName(Long plazaId) {
+        if (plazaId == null) {
+            return "";
+        } else {
+            Plaza plaza = plazaMapper.selectById(plazaId);
+            if (ToolUtil.isNotEmpty(plaza) && ToolUtil.isNotEmpty(plaza.getPlazaName())) {
+                return plaza.getPlazaName();
+            }
+            return "";
+        }
     }
 
 }

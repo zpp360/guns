@@ -95,4 +95,10 @@ public interface MenuMapper extends BaseMapper<Menu> {
      */
     List<Menu> getMenusLikePcodes(@Param("code") String code);
 
+    /**
+     * 根据用户id获取自定义权限列表
+     * @param userId
+     * @return
+     */
+    List<String> findPermissionsByUserId(@Param("userId") Long userId);
 }

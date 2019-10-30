@@ -23,6 +23,7 @@ import cn.stylefeng.guns.core.common.constant.DefaultAvatar;
 import cn.stylefeng.guns.core.common.constant.factory.ConstantFactory;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
+import cn.stylefeng.guns.core.log.factory.LogFactory;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.modular.system.entity.FileInfo;
@@ -55,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * 通用控制器
@@ -260,7 +262,7 @@ public class SystemController extends BaseController {
             byte[] decode = Base64.decode(avatar);
             response.getOutputStream().write(decode);
         } catch (IOException e) {
-            log.error("获取图片的流错误！", avatar);
+            //log.error("获取图片的流错误！", avatar);
             throw new ServiceException(CoreExceptionEnum.SERVICE_ERROR);
         }
 

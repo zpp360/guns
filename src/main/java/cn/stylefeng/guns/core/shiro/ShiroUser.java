@@ -75,6 +75,24 @@ public class ShiroUser implements Serializable {
      */
     private List<String> roleNames;
 
+    /**
+     * 纪念馆Id
+     */
+    private Long plazaId;
+
+    /**
+     * 是否是纪念馆管理员
+     */
+    private boolean isPlazaAdmin;
+
+
+    public boolean isPlazaAdmin() {
+        return isPlazaAdmin;
+    }
+
+    public void setPlazaAdmin(boolean plazaAdmin) {
+        isPlazaAdmin = plazaAdmin;
+    }
 
     public Long getId() {
         return id;
@@ -146,5 +164,13 @@ public class ShiroUser implements Serializable {
 
     public void setRoleNames(List<String> roleNames) {
         this.roleNames = roleNames;
+    }
+
+    public Long getPlazaId() {
+        return plazaId;
+    }
+
+    public void setPlazaId(Long plazaId) {
+        this.plazaId = plazaId;
     }
 }

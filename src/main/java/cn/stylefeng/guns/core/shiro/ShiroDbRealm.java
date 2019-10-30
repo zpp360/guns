@@ -19,6 +19,7 @@ import cn.stylefeng.guns.core.shiro.service.UserAuthService;
 import cn.stylefeng.guns.core.shiro.service.impl.UserAuthServiceServiceImpl;
 import cn.stylefeng.guns.modular.system.entity.User;
 import cn.stylefeng.roses.core.util.ToolUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -30,6 +31,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,12 +63,26 @@ public class ShiroDbRealm extends AuthorizingRealm {
         Set<String> permissionSet = new HashSet<>();
         Set<String> roleNameSet = new HashSet<>();
 
+        //自定义权限
+        boolean flag = true;
+        List<String> permissionList = shiroFactory.findPermissionsByUserId(shiroUser.getId());
+        if (CollectionUtils.isNotEmpty(permissionList)) {
+            flag = false;
+            for (String permission : permissionList) {
+                if (ToolUtil.isNotEmpty(permission)) {
+                    permissionSet.add(permission);
+                }
+            }
+        }
+
         for (Long roleId : roleList) {
-            List<String> permissions = shiroFactory.findPermissionsByRoleId(roleId);
-            if (permissions != null) {
-                for (String permission : permissions) {
-                    if (ToolUtil.isNotEmpty(permission)) {
-                        permissionSet.add(permission);
+            if(flag){
+                List<String> permissions = shiroFactory.findPermissionsByRoleId(roleId);
+                if (permissions != null) {
+                    for (String permission : permissions) {
+                        if (ToolUtil.isNotEmpty(permission)) {
+                            permissionSet.add(permission);
+                        }
                     }
                 }
             }

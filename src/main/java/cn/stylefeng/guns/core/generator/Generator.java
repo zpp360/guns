@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.core.generator;
 
 
+import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
@@ -36,12 +37,14 @@ public class Generator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         gc.setAuthor("zhengpp");
-        gc.setOutputDir("D:\\Program Files\\intellijEDEAworkspace\\guns\\src\\main\\java");
+        gc.setOutputDir("F://");
         gc.setFileOverride(false);// 是否覆盖同名文件，默认是false
         gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
         gc.setBaseColumnList(true);// XML columList
+        //设置entity主键生成策略
+        gc.setIdType(IdType.ID_WORKER);
         /* 自定义文件命名，注意 %s 会自动填充表实体属性！ */
         gc.setMapperName("%sMapper");
         // gc.setXmlName("%sDao");
@@ -73,7 +76,7 @@ public class Generator {
         //strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
         strategy.setTablePrefix(new String[] { "m_" });// 表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[] { "m_machine"}); // 需要生成的表
+        strategy.setInclude(new String[] { "m_plaza"}); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -97,7 +100,7 @@ public class Generator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("cn.stylefeng.guns.modular.shenjiang");
+        pc.setParent("cn.stylefeng.guns.modular.shuheng");
         pc.setController("controller");
         pc.setXml("mapper.mapping");
 //        pc.setModuleName("test");
@@ -194,7 +197,7 @@ public class Generator {
          tc.setMapper("templates/mapper.java");
          tc.setXml("templates/mapper.xml");
          tc.setService("templates/service.java");
-         //tc.setServiceImpl("...");
+         tc.setServiceImpl(null);
 //         如上任何一个模块如果设置 空 OR Null 将不生成该模块。
          mpg.setTemplate(tc);
 

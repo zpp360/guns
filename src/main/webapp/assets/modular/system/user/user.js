@@ -14,7 +14,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
         tableId: "userTable",    //表格id
         condition: {
             name: "",
-            deptId: "",
+            plazaId: "",
             timeLimit: ""
         }
     };
@@ -28,11 +28,11 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
             {field: 'userId', hide: true, sort: true, title: '用户id'},
             {field: 'account', sort: true, title: '账号'},
             {field: 'name', sort: true, title: '姓名'},
+            {field: 'phone', sort: true, title: '电话'},
             {field: 'sexName', sort: true, title: '性别'},
             {field: 'roleName', sort: true, title: '角色'},
-            {field: 'deptName', sort: true, title: '部门'},
-            {field: 'email', sort: true, title: '邮箱'},
-            {field: 'phone', sort: true, title: '电话'},
+            {field: 'plazaName', sort: true, title: '纪念馆'},
+            // {field: 'email', sort: true, title: '邮箱'},
             {field: 'createTime', sort: true, title: '创建时间'},
             {field: 'status', sort: true, templet: '#statusTpl', title: '状态'},
             {align: 'center', toolbar: '#tableBar', title: '操作', minWidth: 280}
@@ -42,17 +42,17 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
     /**
      * 选择部门时
      */
-    MgrUser.onClickDept = function (e, treeId, treeNode) {
-        MgrUser.condition.deptId = treeNode.id;
-        MgrUser.search();
-    };
+    // MgrUser.onClickDept = function (e, treeId, treeNode) {
+    //     MgrUser.condition.plazaId = treeNode.id;
+    //     MgrUser.search();
+    // };
 
     /**
      * 点击查询按钮
      */
     MgrUser.search = function () {
         var queryData = {};
-        queryData['deptId'] = MgrUser.condition.deptId;
+        queryData['plazaId'] = $("#plazaId").val();
         queryData['name'] = $("#name").val();
         queryData['timeLimit'] = $("#timeLimit").val();
         table.reload(MgrUser.tableId, {where: queryData});
@@ -139,6 +139,22 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
     };
 
     /**
+     * 分配自定义权限
+     * @param data
+     */
+    MgrUser.permissionAssign = function (data) {
+        layer.open({
+            type: 2,
+            title: '权限分配',
+            area: ['300px', '400px'],
+            content: Feng.ctxPath + '/mgr/permission_assign?userId=' + data.userId,
+            end: function () {
+                table.reload(MgrUser.tableId);
+            }
+        });
+    }
+
+    /**
      * 重置密码
      *
      * @param data 点击按钮时候的行数据
@@ -148,7 +164,7 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
             var ajax = new $ax(Feng.ctxPath + "/mgr/reset", function (data) {
                 Feng.success("重置密码成功!");
             }, function (data) {
-                Feng.error("重置密码失败!");
+                Feng.error("重置密码失败!"+ data.responseJSON.message + "!");
             });
             ajax.set("userId", data.userId);
             ajax.start();
@@ -200,10 +216,17 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
         max: Feng.currentDate()
     });
 
+    //渲染纪念馆下拉框
+    var ajax = new $ax(Feng.ctxPath + "/plaza/selectPlaza", function (data) {
+        $("#plazaId").append(data)
+    })
+    ajax.start();
+    form.render('select');
+
     //初始化左侧部门树
-    var ztree = new $ZTree("deptTree", "/dept/tree");
-    ztree.bindOnClick(MgrUser.onClickDept);
-    ztree.init();
+    // var ztree = new $ZTree("deptTree", "/dept/tree");
+    // ztree.bindOnClick(MgrUser.onClickDept);
+    // ztree.init();
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -233,6 +256,8 @@ layui.use(['layer', 'form', 'table', 'ztree', 'laydate', 'admin', 'ax'], functio
             MgrUser.roleAssign(data);
         } else if (layEvent === 'reset') {
             MgrUser.resetPassword(data);
+        }else if(layEvent==='permissionAssign'){
+            MgrUser.permissionAssign(data)
         }
     });
 

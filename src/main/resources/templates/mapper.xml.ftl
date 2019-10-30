@@ -26,13 +26,17 @@
     </resultMap>
 
 </#if>
+
 <#if baseColumnList>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-<#list table.commonFields as field>
+<#list table.fields as field>
+    <#if !field_has_next>
+        ${field.name} as ${field.propertyName}
+    <#else>
         ${field.name} as ${field.propertyName},
+    </#if>
 </#list>
-        ${table.fieldNames}
     </sql>
 
 </#if>

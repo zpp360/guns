@@ -296,6 +296,35 @@ public class ShiroKit {
     }
 
     /**
+     * 纪念馆管理员
+     * @return
+     */
+    public static boolean isPlazaAdmin(){
+        return getUser().isPlazaAdmin();
+    }
+
+    /**
+     * 判断当前用户是否是普通管理员，管理纪念馆数据（非超级管理员，只是普通管理员）
+     */
+    public static boolean isGeneral() {
+        List<Long> roleList = ShiroKit.getUser().getRoleList();
+        for (Long integer : roleList) {
+            String singleRoleTip = ConstantFactory.me().getSingleRoleTip(integer);
+            if (singleRoleTip.equals(Const.ADMIN_NAME)) {
+                return false;
+            }
+        }
+        for (Long integer : roleList) {
+            String singleRoleTip = ConstantFactory.me().getSingleRoleTip(integer);
+            if (singleRoleTip.equals(Const.GENERAL_NAME)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
      * 通过用户表的信息创建一个shiroUser对象
      */
     public static ShiroUser createShiroUser(User user) {
@@ -312,6 +341,9 @@ public class ShiroKit {
         shiroUser.setName(user.getName());
         shiroUser.setEmail(user.getEmail());
         shiroUser.setAvatar(user.getAvatar());
+        shiroUser.setPlazaId(user.getPlazaId());
+        shiroUser.setPlazaAdmin(user.isPlazaAdmin());
+
 
         return shiroUser;
     }

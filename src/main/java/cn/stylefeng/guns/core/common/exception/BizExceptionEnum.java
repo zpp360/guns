@@ -55,11 +55,13 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      */
     NOT_LOGIN(401, "当前用户未登录"),
     USER_ALREADY_REG(401, "该用户已经注册"),
+    USER_ALREADY_PHONE(403, "该手机号已经注册"),
     NO_THIS_USER(400, "没有此用户"),
     USER_NOT_EXISTED(400, "没有此用户"),
     ACCOUNT_FREEZED(401, "账号被冻结"),
     OLD_PWD_NOT_RIGHT(402, "原密码不正确"),
     TWO_PWD_NOT_MATCH(405, "两次输入密码不一致"),
+    LIMIT_OPERATE_SELF(406, "不允许操作自己账号"),
 
     /**
      * 错误的请求

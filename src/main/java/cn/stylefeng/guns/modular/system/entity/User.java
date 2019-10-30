@@ -91,6 +91,15 @@ public class User implements Serializable {
     private Long deptId;
 
     /**
+     * 纪念馆id
+     */
+    @TableField(value = "plaza_id",strategy = FieldStrategy.IGNORED)
+    private Long plazaId;
+
+    @TableField(value = "plaza_admin")
+    private boolean plazaAdmin;
+
+    /**
      * 状态(字典)
      */
     @TableField("status")
@@ -269,6 +278,22 @@ public class User implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Long getPlazaId() {
+        return plazaId;
+    }
+
+    public void setPlazaId(Long plazaId) {
+        this.plazaId = plazaId;
+    }
+
+    public boolean isPlazaAdmin() {
+        return plazaAdmin;
+    }
+
+    public void setPlazaAdmin(boolean plazaAdmin) {
+        this.plazaAdmin = plazaAdmin;
     }
 
     @Override

@@ -15,7 +15,6 @@
  */
 package cn.stylefeng.guns.modular.system.model;
 
-import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -38,11 +37,29 @@ public class UserDto {
     private String sex;
     private String email;
     private String phone;
-    private String roleId;
     private Long deptId;
     private String status;
     private String avatar;
 
+    private Long plazaId;
+
+    private String roleId;
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getPlazaId() {
+        return plazaId;
+    }
+
+    public void setPlazaId(Long plazaId) {
+        this.plazaId = plazaId;
+    }
 
     public Long getUserId() {
         return userId;
@@ -106,14 +123,6 @@ public class UserDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
     }
 
     public Long getDeptId() {

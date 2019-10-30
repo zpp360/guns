@@ -11,6 +11,11 @@
 
     <link rel="stylesheet" href="${ctxPath}/assets/common/layui/css/layui.css"/>
     <link href="${ctxPath}/assets/expand/plugins/ztree/zTreeStyle.css" rel="stylesheet" type="text/css"/>
+    <style type="text/css">
+        #plaza{
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,6 +23,16 @@
     <div class="layui-row" style="margin-top:15px;background: #f2f7f8;padding: 20px;">
         <ul id="zTree" class="ztree"></ul>
     </div>
+    <form id="userForm" lay-filter="userForm" class="layui-form model-form" style="padding-top: 20px;">
+        <div class="layui-form-item" id="plaza">
+            <label class="layui-form-label">纪念馆<span style="color: red;">*</span></label>
+            <div class="layui-input-block">
+                <select id="plazaId" name="plazaId" lay-verify="">
+                    <option value="">请选择纪念馆</option>
+                </select>
+            </div>
+        </div>
+    </form>
     <div class="layui-row" style="background: #CFD4D5;padding: 10px;">
         <div style="text-align: center;">
             <button class="layui-btn layui-btn-sm" id="saveButton">保存</button>
@@ -47,15 +62,28 @@
 
 <script type="text/javascript">
 
-    layui.use(['ztree','ax'], function () {
+    layui.use(['form','ztree','ax'], function () {
         var $ZTree = layui.ztree;
         var $ax = layui.ax;
+        var $ = layui.$;
+        var form = layui.form;
 
         var ZTreeDlg = {
             index: parent.layer.getFrameIndex(window.name)
         };
 
         $("#saveButton").bind("click", function () {
+            var treeObj = $.fn.zTree.getZTreeObj("zTree");
+            var nodes = treeObj.getNodes();
+            for(var i=0; i< nodes.length; i++){
+                if(nodes[i].checked && "纪念馆管理员"===nodes[i].name){
+                    if($("#plazaId").val()==null || $("#plazaId").val()==""){
+                        Feng.error("纪念馆管理员请选择纪念馆")
+                        return
+                    }
+                }
+            }
+
             var ids = Feng.zTreeCheckedNodes("zTree");
             var ajax = new $ax(Feng.ctxPath + "/mgr/setRole", function (data) {
                 Feng.success("分配角色成功!");
@@ -65,6 +93,7 @@
             });
             ajax.set("roleIds", ids);
             ajax.set("userId", "${userId}");
+            ajax.set("plazaId",$("#plazaId").val())
             ajax.start();
         });
 
@@ -80,13 +109,60 @@
                 simpleData: {
                     enable: true
                 }
+            },
+            callback:{
+                onCheck:zTreeOnCheck
             }
         };
 
         var ztree = new $ZTree("zTree", "/role/roleTreeListByUserId/${userId}");
         ztree.setSettings(setting);
         ztree.init();
+
+        var treeObj = $.fn.zTree.getZTreeObj("zTree");
+        var nodes = treeObj.getNodes();
+        for(var i=0; i< nodes.length; i++){
+            if(nodes[i].checked && "纪念馆管理员"===nodes[i].name){
+                $("#plaza").show()
+                //查询所有纪念馆
+                var ajax = new $ax(Feng.ctxPath + "/plaza/selectPlaza", function (data) {
+                    $("#plazaId").append(data)
+                })
+                ajax.start();
+                //重新渲染select
+                form.render('select');
+                //获取用户信息
+                var ajax = new $ax(Feng.ctxPath + "/mgr/getUserInfo?userId=${userId}");
+                var result = ajax.start();
+                form.val('userForm', result.data);
+            }
+        }
+
+
+        function zTreeOnCheck(event,treeId,treeNode){
+            if("纪念馆管理员"===treeNode.name){
+                if(treeNode.checked){
+                    //纪念馆管理员需要设置纪念馆id,才能来管理纪念馆
+                    $("#plaza").show()
+                    //查询所有纪念馆
+                    var ajax = new $ax(Feng.ctxPath + "/plaza/selectPlaza", function (data) {
+                        $("#plazaId").append(data)
+                    })
+                    ajax.start();
+                    //重新渲染select
+                    form.render('select');
+                }else{
+                    $("#plazaId option").remove()
+                    $("#plaza").hide()
+                }
+
+
+            }
+        }
     });
+
+
+
 
 </script>
 

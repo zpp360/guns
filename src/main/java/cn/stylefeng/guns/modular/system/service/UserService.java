@@ -1,20 +1,24 @@
 package cn.stylefeng.guns.modular.system.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
 import cn.stylefeng.guns.core.common.constant.Const;
 import cn.stylefeng.guns.core.common.constant.state.ManagerStatus;
 import cn.stylefeng.guns.core.common.exception.BizExceptionEnum;
 import cn.stylefeng.guns.core.common.node.MenuNode;
+import cn.stylefeng.guns.core.common.node.ZTreeNode;
 import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.shiro.service.UserAuthService;
 import cn.stylefeng.guns.core.util.ApiMenuFilter;
+import cn.stylefeng.guns.modular.system.entity.Relation;
 import cn.stylefeng.guns.modular.system.entity.User;
 import cn.stylefeng.guns.modular.system.factory.UserFactory;
 import cn.stylefeng.guns.modular.system.mapper.UserMapper;
 import cn.stylefeng.guns.modular.system.model.UserDto;
 import cn.stylefeng.roses.core.datascope.DataScope;
+import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -22,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +60,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         if (theUser != null) {
             throw new ServiceException(BizExceptionEnum.USER_ALREADY_REG);
         }
+        //判断手机号是否重复
+        theUser = this.baseMapper.getByPhone(user.getPhone());
+        if (theUser != null) {
+            throw new ServiceException(BizExceptionEnum.USER_ALREADY_PHONE);
+        }
 
         // 完善账号信息
         String salt = ShiroKit.getRandomSalt(5);
@@ -72,6 +82,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void editUser(UserDto user) {
         User oldUser = this.getById(user.getUserId());
 
+        User exitPhone = this.baseMapper.eixtPhone(user);
+        //判断手机号是否正确
+        if(exitPhone!=null){
+            throw new ServiceException(BizExceptionEnum.USER_ALREADY_PHONE);
+        }
         if (ShiroKit.hasRole(Const.ADMIN_NAME)) {
             this.updateById(UserFactory.editUser(user, oldUser));
         } else {
@@ -138,9 +153,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @author fengshuonan
      * @Date 2018/12/24 22:45
      */
-    public Page<Map<String, Object>> selectUsers(DataScope dataScope, String name, String beginTime, String endTime, Long deptId) {
+    public Page<Map<String, Object>> selectUsers(DataScope dataScope, String name, String beginTime, String endTime, Long plazaId) {
         Page page = LayuiPageFactory.defaultPage();
-        return this.baseMapper.selectUsers(page, dataScope, name, beginTime, endTime, deptId);
+        return this.baseMapper.selectUsers(page, dataScope, name, beginTime, endTime, plazaId);
     }
 
     /**
@@ -190,10 +205,8 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         if (ShiroKit.isAdmin()) {
             return;
         }
-        List<Long> deptDataScope = ShiroKit.getDeptDataScope();
-        User user = this.getById(userId);
-        Long deptId = user.getDeptId();
-        if (deptDataScope.contains(deptId)) {
+        //普通管理员，纪念馆的总管理员
+        if(ShiroKit.isGeneral()){
             return;
         } else {
             throw new ServiceException(BizExceptionEnum.NO_PERMITION);
@@ -216,4 +229,81 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         BeanUtil.copyProperties(shiroUser, lastUser);
     }
 
+    /**
+     * 设置用户管理的纪念馆id
+     * @param userId
+     * @param plazaId
+     */
+    public void updateUserPlaza(Long userId, Long plazaId) {
+        User user = new User();
+        user.setUserId(userId);
+        user.setPlazaId(plazaId);
+        this.baseMapper.updateById(user);
+    }
+
+    /**
+     * 根据userId获取用户菜单权限列表
+     * @param userId
+     * @return
+     */
+    public List<Long> getMenuIdsByUserId(Long userId) {
+        return this.baseMapper.getMenuIdsByUserId(userId);
+    }
+
+    /**
+     * 获取菜单列表树
+     *
+     * @return
+     * @date 2017年2月19日 下午1:33:51
+     */
+    public List<ZTreeNode> menuTreeList(String roleDesc) {
+        return this.baseMapper.menuTreeList(roleDesc);
+    }
+
+    /**
+     * 查询有权限的菜单列表树
+     * @param roleDesc
+     * @param menuIds
+     * @return
+     */
+    public List<ZTreeNode> menuTreeListByMenuIds(String roleDesc, List<Long> menuIds) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("roleDesc",roleDesc);
+        map.put("list",menuIds);
+        return this.baseMapper.menuTreeListByMenuIds(map);
+    }
+
+    /**
+     * 配置自定义权限
+     * @param user
+     * @param menuIds
+     */
+    public void setPermission(User user, String menuIds) {
+        //先设置plaza_id
+        this.baseMapper.updateById(user);
+        //删除用户权限
+        this.baseMapper.deleteMenuIdsByUserId(user.getUserId());
+        // 添加新的权限
+        List<Map<String,Long>> list = new ArrayList<>();
+        Long[] menuIdArr = Convert.toLongArray(menuIds.split(","));
+        if(ToolUtil.isNotEmpty(menuIds) && menuIdArr!=null && menuIdArr.length>0){
+            for (Long id : menuIdArr) {
+                Map<String,Long> map = new HashMap<>();
+                map.put("userId",user.getUserId());
+                map.put("menuId",id);
+                list.add(map);
+            }
+            this.baseMapper.batchSaveUserMenu(list);
+        }
+    }
+
+
+    /**
+     * 删除用户自定义权限
+     * @param userId
+     */
+    public void deleteMenuIdsByUserId(Long userId){
+        //删除用户权限
+        this.baseMapper.deleteMenuIdsByUserId(userId);
+    }
 }

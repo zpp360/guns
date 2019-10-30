@@ -204,4 +204,11 @@
         </if>
     </select>
 
+    <select id="findPermissionsByUserId" resultType="string">
+        select URL from
+        sys_user_menu rel
+        inner join sys_menu m on rel.menu_id = m.menu_id
+        where rel.user_id = #{userId}
+    </select>
+
 </mapper>

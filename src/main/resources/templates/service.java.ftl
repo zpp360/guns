@@ -2,7 +2,7 @@ package ${package.Service};
 
 import ${package.Entity}.${entity};
 import ${superServiceClassPackage};
-import cn.stylefeng.guns.modular.shenjiang.mapper.${table.mapperName};
+import cn.stylefeng.guns.modular.shuheng.mapper.${table.mapperName};
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

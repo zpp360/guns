@@ -1,6 +1,8 @@
 package cn.stylefeng.guns.modular.system.mapper;
 
+import cn.stylefeng.guns.core.common.node.ZTreeNode;
 import cn.stylefeng.guns.modular.system.entity.User;
+import cn.stylefeng.guns.modular.system.model.UserDto;
 import cn.stylefeng.roses.core.datascope.DataScope;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,7 +34,7 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 根据条件查询用户列表
      */
-    Page<Map<String, Object>> selectUsers(@Param("page") Page page, @Param("dataScope") DataScope dataScope, @Param("name") String name, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("deptId") Long deptId);
+    Page<Map<String, Object>> selectUsers(@Param("page") Page page, @Param("dataScope") DataScope dataScope, @Param("name") String name, @Param("beginTime") String beginTime, @Param("endTime") String endTime, @Param("plazaId") Long plazaId);
 
     /**
      * 设置用户的角色
@@ -44,4 +46,50 @@ public interface UserMapper extends BaseMapper<User> {
      */
     User getByAccount(@Param("account") String account);
 
+    /**
+     * 通过手机号获取用户
+     * @param phone
+     * @return
+     */
+    User getByPhone(@Param("phone") String phone);
+
+    /**
+     * 是否存在该手机号的用户
+     * @param user
+     * @return
+     */
+    User eixtPhone(@Param("user")UserDto user);
+
+    /**
+     * 根据用户id查询菜单权限
+     * @param userId
+     * @return
+     */
+    List<Long> getMenuIdsByUserId(@Param("userId")Long userId);
+
+    /**
+     * 获取角色下所有菜单
+     * @param roleDesc
+     * @return
+     */
+    List<ZTreeNode> menuTreeList(@Param("roleDesc")String roleDesc);
+
+    /**
+     * 查询有权限的菜单列表树
+     * @param map
+     * @return
+     */
+    List<ZTreeNode> menuTreeListByMenuIds(Map map);
+
+    /**
+     * 删除用户自定义权限
+     * @param userId
+     */
+    void deleteMenuIdsByUserId(@Param("userId")Long userId);
+
+    /**
+     * 批量保存用户自定义权限
+     * @param list
+     */
+    void batchSaveUserMenu(List<Map<String, Long>> list);
 }
