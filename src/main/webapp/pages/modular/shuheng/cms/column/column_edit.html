@@ -1,0 +1,64 @@
+@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/shuheng/cms/column/column_edit.js?v=1"]}){
+
+<form id="columnForm" lay-filter="columnForm" class="layui-form model-form" style="max-width: 700px;">
+
+
+    <input type="hidden" name="columnId"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">栏目名称<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="columnName" name="columnName" maxlength="30" placeholder="请输入栏目名称" type="text"
+                   class="layui-input"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    @if(shiro.hasRole("administrator")){
+    <div class="layui-form-item">
+        <label class="layui-form-label">纪念馆<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <select id="plazaId" name="plazaId" lay-verify="">
+                <option value="">请选择纪念馆</option>
+            </select>
+        </div>
+    </div>
+    @}
+    <div class="layui-form-item">
+        <label class="layui-form-label">父栏目<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input type="hidden" name="parentId" id="parentId" lay-verify="required" required/>
+            <input id="parentName" name="parentName" maxlength="30" placeholder="请输入父栏目" type="text" class="layui-input"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片宽度<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="imgWidth" name="imgWidth" maxlength="30" placeholder="请输入图片宽度" type="number" class="layui-input"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">图片高度<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="imgHeight" name="imgHeight" maxlength="30" placeholder="请输入图片高度" type="number"
+                   class="layui-input"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="sort" name="sort" placeholder="请输入排序号码" style="width:130px" maxlength="3" type="number"
+                   class="layui-input" lay-verify="sort">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item text-right">
+        <button class="layui-btn" lay-filter="btnSubmit" lay-submit>更新</button>
+        <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog" id="backupPage">返回</button>
+    </div>
+</form>
+
+
+@}

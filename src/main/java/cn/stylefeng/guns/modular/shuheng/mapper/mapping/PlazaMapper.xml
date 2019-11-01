@@ -26,5 +26,8 @@
         <if test="plazaName != null and plazaName != ''">
             and plaza_name like CONCAT('%',#{plazaName},'%')
         </if>
+        <if test="plazaId != null and plazaId != ''">
+            and plaza_id = #{plazaId}
+        </if>
     </select>
 </mapper>

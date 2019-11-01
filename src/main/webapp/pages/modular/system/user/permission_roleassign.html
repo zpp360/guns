@@ -86,6 +86,10 @@
             }else{
                 //未选中，获取菜单选中节点
                 var ids = Feng.zTreeCheckedNodes("zTree");
+                if(ids==null || ids==''){
+                    Feng.error("请选择菜单！")
+                    return
+                }
                 ajax.set("isPlazaAdmin","0")
                 ajax.set("menuIds",ids)
             }

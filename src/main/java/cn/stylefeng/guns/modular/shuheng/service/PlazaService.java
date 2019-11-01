@@ -18,8 +18,8 @@ import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
  */
 @Service
 public class PlazaService extends ServiceImpl<PlazaMapper,Plaza> {
-   public Page<Map<String,Object>> listPlaza(String plazaName) {
+   public Page<Map<String,Object>> listPlaza(String plazaName,Long plazaId) {
       Page page = LayuiPageFactory.defaultPage();
-      return this.baseMapper.selectPlaza(page,plazaName);
+      return this.baseMapper.selectPlaza(page,plazaName,plazaId);
    }
 }

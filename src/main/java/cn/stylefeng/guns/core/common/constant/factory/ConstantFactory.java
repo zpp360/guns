@@ -27,7 +27,9 @@ import cn.stylefeng.guns.modular.shenjiang.entity.Machine;
 import cn.stylefeng.guns.modular.shenjiang.mapper.FloorMapper;
 import cn.stylefeng.guns.modular.shenjiang.mapper.MachineMapper;
 import cn.stylefeng.guns.modular.shenjiang.service.FloorService;
+import cn.stylefeng.guns.modular.shuheng.entity.Column;
 import cn.stylefeng.guns.modular.shuheng.entity.Plaza;
+import cn.stylefeng.guns.modular.shuheng.mapper.ColumnMapper;
 import cn.stylefeng.guns.modular.shuheng.mapper.PlazaMapper;
 import cn.stylefeng.guns.modular.system.entity.*;
 import cn.stylefeng.guns.modular.system.mapper.*;
@@ -65,6 +67,7 @@ public class ConstantFactory implements IConstantFactory {
 
 
     private PlazaMapper plazaMapper = SpringContextHolder.getBean(PlazaMapper.class);
+    private ColumnMapper columnMapper = SpringContextHolder.getBean(ColumnMapper.class);
 
 
     public static IConstantFactory me() {
@@ -380,6 +383,19 @@ public class ConstantFactory implements IConstantFactory {
                 return plaza.getPlazaName();
             }
             return "";
+        }
+    }
+
+    @Override
+    public Object getColumnNameById(Long columnId) {
+        if(columnId == null){
+            return "";
+        }else{
+            Column column = columnMapper.selectById(columnId);
+            if(column==null || ToolUtil.isEmpty(column.getColumnName())){
+                return "";
+            }
+            return column.getColumnName();
         }
     }
 

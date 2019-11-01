@@ -25,10 +25,10 @@
         <div class="layui-form-item">
             <label class="layui-form-label">排序<span style="color: red;">*</span></label>
             <div class="layui-input-block">
-                <input id="sort" name="sort" placeholder="请输入排序号码" style="width:120px" maxlength="3" type="number" class="layui-input" lay-verify="sort">
+                <input id="sort" name="sort" placeholder="请输入排序号码" style="width:130px" maxlength="3" type="number" class="layui-input" lay-verify="sort">
             </div>
         </div>
-    <#elseif "create_time"==field.name || "create_user"==field.name || "update_time"==field.name ||"update_user"==field.name>
+    <#elseif "create_time"==field.name || "create_user"==field.name || "update_time"==field.name ||"update_user"==field.name || "del_flag"==field.name>
     <#else>
         <div class="layui-form-item">
             <label class="layui-form-label">${field.comment}<span style="color: red;">*</span></label>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.Map;
+import java.util.Date;
 
 <#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
@@ -83,10 +84,6 @@ public class ${table.controllerName} {
       if (${table.entityPath} == null) {
          throw new RequestEmptyException();
       }
-      ${table.entityPath}.setCreateUser(user.getId());
-      ${table.entityPath}.setCreateTime(new Date());
-      ${table.entityPath}.setUpdateUser(user.getId());
-      ${table.entityPath}.setUpdateTime(new Date());
       this.${table.entityPath}Service.save(${table.entityPath});
       return SUCCESS_TIP;
    }
@@ -110,10 +107,6 @@ public class ${table.controllerName} {
       if (${table.entityPath} == null) {
          throw new RequestEmptyException();
       }
-      ${table.entityPath}.setCreateUser(user.getId());
-      ${table.entityPath}.setCreateTime(new Date());
-      ${table.entityPath}.setUpdateUser(user.getId());
-      ${table.entityPath}.setUpdateTime(new Date());
       this.${table.entityPath}Service.updateById(${table.entityPath});
       return SUCCESS_TIP;
    }

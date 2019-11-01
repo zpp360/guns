@@ -483,6 +483,8 @@ public class UserMgrController extends BaseController {
             user.setRoleId(role.getRoleId().toString());
             user.setPlazaAdmin(true);
             userService.updateById(user);
+            //删除sys_user_menu
+            userService.deleteMenuIdsByUserId(userId);
         }
         if(isPlazaAdmin == 0){
             //自定义权限

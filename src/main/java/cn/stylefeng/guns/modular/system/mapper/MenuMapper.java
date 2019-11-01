@@ -101,4 +101,11 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @return
      */
     List<String> findPermissionsByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户Id获取自定义权限菜单列表
+     * @param userId
+     * @return
+     */
+    List<MenuNode> getMenusByUserId(Long userId);
 }

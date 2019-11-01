@@ -64,6 +64,11 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     LIMIT_OPERATE_SELF(406, "不允许操作自己账号"),
 
     /**
+     * 栏目
+     */
+    EXIT_SUB_COLUMN(501,"请先删除下级栏目"),
+
+    /**
      * 错误的请求
      */
     MENU_PCODE_COINCIDENCE(400, "菜单编号和副编号不能一致"),

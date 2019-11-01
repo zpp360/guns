@@ -6,7 +6,6 @@ import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.core.util.HtmlUtil;
-import cn.stylefeng.guns.modular.shenjiang.entity.Machine;
 import cn.stylefeng.guns.modular.shuheng.entity.Plaza;
 import cn.stylefeng.guns.modular.shuheng.service.PlazaService;
 import cn.stylefeng.roses.core.base.controller.BaseController;
@@ -52,7 +51,14 @@ public class PlazaController extends BaseController {
    @RequestMapping("/list")
    @ResponseBody
    public Object list(@RequestParam(value = "plazaName", required = false) String plazaName){
-      Page<Map<String,Object>> page = plazaService.listPlaza(plazaName);
+      Page<Map<String,Object>> page = new Page();
+      if(ShiroKit.isAdmin()){
+         page = plazaService.listPlaza(plazaName,null);
+      }else if(ShiroKit.isGeneral() && ShiroKit.isPlazaAdmin()){
+         ShiroUser shiroUser = ShiroKit.getUser();
+         Long plazaId = shiroUser.getPlazaId();
+         page = plazaService.listPlaza(plazaName,plazaId);
+      }
       return LayuiPageFactory.createPageInfo(page);
    }
 

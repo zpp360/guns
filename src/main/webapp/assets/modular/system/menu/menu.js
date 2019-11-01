@@ -151,17 +151,10 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
         treetable.foldAll('#' + Menu.tableId);
     });
 
-    //渲染时间选择框
-    laydate.render({
-        elem: '#timeLimit',
-        range: true,
-        max: Feng.currentDate()
-    });
-
     //初始化左侧部门树
-    var ztree = new $ZTree("menuTree", "/menu/selectMenuTreeList");
-    ztree.bindOnClick(Menu.onClickMenu);
-    ztree.init();
+    // var ztree = new $ZTree("menuTree", "/menu/selectMenuTreeList");
+    // ztree.bindOnClick(Menu.onClickMenu);
+    // ztree.init();
 
     // 搜索按钮点击事件
     $('#btnSearch').click(function () {
@@ -182,20 +175,8 @@ layui.use(['layer', 'form', 'ztree', 'laydate', 'admin', 'ax', 'table', 'treetab
             Menu.onEditMenu(data);
         } else if (layEvent === 'delete') {
             Menu.onDeleteMenu(data);
-        } else if (layEvent === 'roleAssign') {
-            Menu.roleAssign(data);
-        } else if (layEvent === 'reset') {
-            Menu.resetPassword(data);
         }
     });
 
-    // 修改user状态
-    form.on('switch(status)', function (obj) {
-
-        var userId = obj.elem.value;
-        var checked = obj.elem.checked ? true : false;
-
-        Menu.changeUserStatus(userId, checked);
-    });
 
 });

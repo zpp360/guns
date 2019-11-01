@@ -211,4 +211,36 @@
         where rel.user_id = #{userId}
     </select>
 
+    <select id="getMenusByUserId" resultType="cn.stylefeng.guns.core.common.node.MenuNode">
+        SELECT
+        m1.menu_id AS id,
+        m1.icon AS icon,
+        (
+        CASE
+        WHEN (m2.menu_id = 0 OR m2.menu_id IS NULL) THEN
+        0
+        ELSE
+        m2.menu_id
+        END
+        ) AS "parentId",
+        m1.name as name,
+        m1.url as url,
+        m1.levels as levels,
+        m1.menu_flag as ismenu,
+        m1.sort as num
+        FROM
+        sys_menu m1
+        LEFT join sys_menu m2 ON m1.pcode = m2.code
+        INNER JOIN (
+        SELECT
+        menu_id
+        FROM
+        sys_user_menu
+        WHERE
+        user_id = #{userId}
+        ) m3 ON m1.menu_id = m3.menu_id
+        where m1.menu_flag = 'Y'
+        order by levels,m1.sort asc
+    </select>
+
 </mapper>

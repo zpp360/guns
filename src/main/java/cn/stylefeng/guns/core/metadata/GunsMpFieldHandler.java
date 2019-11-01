@@ -17,7 +17,10 @@ package cn.stylefeng.guns.core.metadata;
 
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.roses.core.metadata.CustomMetaObjectHandler;
+import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 /**
  * 字段填充器
@@ -27,6 +30,44 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GunsMpFieldHandler extends CustomMetaObjectHandler {
+
+    @Override
+    public void updateFill(MetaObject metaObject) {
+        this.setFieldValByName(this.getUpdateTimeFieldName(), new Date(), metaObject);
+        Object accountId = this.getUserUniqueId();
+        this.setFieldValByName(this.getUpdateUserFieldName(), accountId, metaObject);
+    }
+
+    @Override
+    public void insertFill(MetaObject metaObject) {
+        Object delFlag = this.getFieldValByName(this.getDeleteFlagFieldName(), metaObject);
+        if (delFlag == null) {
+            this.setFieldValByName(this.getDeleteFlagFieldName(), this.getDefaultDelFlagValue(), metaObject);
+        }
+
+        Object createTime = this.getFieldValByName(this.getCreateTimeFieldName(), metaObject);
+        if (createTime == null) {
+            this.setFieldValByName(this.getCreateTimeFieldName(), new Date(), metaObject);
+        }
+
+        Object createUser = this.getFieldValByName(this.getCreateUserFieldName(), metaObject);
+        if (createUser == null) {
+            Object accountId = this.getUserUniqueId();
+            this.setFieldValByName(this.getCreateUserFieldName(), accountId, metaObject);
+        }
+
+        Object updateTime = this.getFieldValByName(this.getUpdateTimeFieldName(),metaObject);
+        if(updateTime == null){
+            this.setFieldValByName(this.getUpdateTimeFieldName(), new Date(), metaObject);
+        }
+
+        Object updateUser = this.getFieldValByName(this.getUpdateUserFieldName(), metaObject);
+        if(updateUser == null){
+            Object accountId = this.getUserUniqueId();
+            this.setFieldValByName(this.getUpdateUserFieldName(), accountId, metaObject);
+        }
+
+    }
 
     @Override
     protected Object getUserUniqueId() {

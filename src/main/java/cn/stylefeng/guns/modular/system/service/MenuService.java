@@ -332,4 +332,19 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
         return maps;
     }
 
+    /**
+     * 根据userId获取自定义权限菜单列表
+     * @param userId
+     * @return
+     */
+    public List<MenuNode> getMenusByUserId(Long userId) {
+        List<MenuNode> menus = this.baseMapper.getMenusByUserId(userId);
+
+        //给所有的菜单url加上ctxPath
+        for (MenuNode menuItem : menus) {
+            menuItem.setUrl(ConfigListener.getConf().get("contextPath") + menuItem.getUrl());
+        }
+
+        return menus;
+    }
 }

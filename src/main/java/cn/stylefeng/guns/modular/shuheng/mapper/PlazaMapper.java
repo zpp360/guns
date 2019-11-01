@@ -16,5 +16,5 @@ import java.util.Map;
  * @since 2019-10-22
  */
 public interface PlazaMapper extends BaseMapper<Plaza> {
-   Page<Map<String, Object>> selectPlaza(@Param("page") Page page,@Param("plazaName") String plazaName);
+   Page<Map<String, Object>> selectPlaza(@Param("page") Page page,@Param("plazaName") String plazaName,@Param("plazaId") Long plazaId);
 }

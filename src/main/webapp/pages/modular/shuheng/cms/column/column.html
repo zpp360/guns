@@ -1,4 +1,4 @@
-@layout("/common/_container.html",{js:["/assets/modular/shuheng/plaza/plaza.js?v=1"]}){
+@layout("/common/_container.html",{js:["/assets/modular/shuheng/cms/column/column.js?v=6"]}){
 
 <div class="layui-body-header">
     <span class="layui-body-header-title">管理</span>
@@ -11,18 +11,23 @@
                 <div class="layui-card-body">
                     <div class="layui-form toolbar">
                         <div class="layui-form-item">
+                            @if(shiro.hasRole("administrator")){
                             <div class="layui-inline">
-                                <input id="plazaName" class="layui-input" type="text" placeholder="名称" autocomplete="off"/>
+                                <select id="plazaId" lay-filter="plazaId" name="plazaId" lay-verify="">
+                                </select>
                             </div>
+                            @}
                             <div class="layui-inline">
-                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
                                 @if(shiro.hasRole("administrator")){
-                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
                                 @}
+                                <button id="btnAdd" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                                <button id="expandAll" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>展开所有</button>
+                                <button id="foldAll" class="layui-btn icon-btn"><i class="layui-icon">&#xe656;</i>折叠所有</button>
                             </div>
                         </div>
                     </div>
-                    <table class="layui-table" id="plazaTable" lay-filter="plazaTable"></table>
+                    <table class="layui-table" id="columnTable" lay-filter="columnTable"></table>
                 </div>
             </div>
         </div>
@@ -30,11 +35,7 @@
 </div>
 
 <script type="text/html" id="tableBar">
-    @if(shiro.hasPermission("/plaza/edit")){
     <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    @}
-    @if(shiro.hasPermission("/plaza/delete")){
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-    @}
 </script>
 @}

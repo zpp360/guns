@@ -185,6 +185,12 @@ public class UserService extends ServiceImpl<UserMapper, User> {
      * @Date 2018/12/24 22:46
      */
     public List<MenuNode> getUserMenuNodes(List<Long> roleList) {
+        if(ShiroKit.isGeneral() && !ShiroKit.isPlazaAdmin()){
+            //场馆自定义权限的管理员
+            List<MenuNode> menus = menuService.getMenusByUserId(ShiroKit.getUser().getId());
+            List<MenuNode> titles = MenuNode.buildTitle(menus);
+            return ApiMenuFilter.build(titles);
+        }
         if (roleList == null || roleList.size() == 0) {
             return new ArrayList<>();
         } else {

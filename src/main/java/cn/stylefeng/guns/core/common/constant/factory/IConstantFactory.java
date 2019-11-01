@@ -159,4 +159,11 @@ public interface IConstantFactory {
      * @return
      */
     Object getPlazaName(Long plazaId);
+
+    /**
+     * 根据id获取
+     * @param columnId
+     * @return
+     */
+    Object getColumnNameById(Long columnId);
 }
