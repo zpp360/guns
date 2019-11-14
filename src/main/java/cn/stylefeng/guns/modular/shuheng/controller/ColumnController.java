@@ -209,7 +209,7 @@ public class ColumnController extends BaseController {
 
 
    /**
-    * 获取菜单列表(选择父级菜单用)
+    * 获取菜单列表
     *
     * @author fengshuonan
     * @Date 2018/12/23 5:54 PM

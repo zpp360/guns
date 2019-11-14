@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.stylefeng.guns.modular.shuheng.mapper.NewsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.stylefeng.guns.modular.shuheng.entity.News">
+        <id column="news_id" property="newsId" />
+        <result column="news_title" property="newsTitle" />
+        <result column="news_source" property="newsSource" />
+        <result column="release_time" property="releaseTime" />
+        <result column="news_digest" property="newsDigest" />
+        <result column="news_img" property="newsImg" />
+        <result column="news_content" property="newsContent" />
+        <result column="news_model" property="newsModel" />
+        <result column="news_file_name" property="newsFileName" />
+        <result column="news_file_path" property="newsFilePath" />
+        <result column="news_video_name" property="newsVideoName" />
+        <result column="news_video_path" property="newsVideoPath" />
+        <result column="column_id" property="columnId" />
+        <result column="top_level" property="topLevel" />
+        <result column="top_level_time" property="topLevelTime" />
+        <result column="news_push" property="newsPush" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        news_id as newsId,
+        news_title as newsTitle,
+        news_source as newsSource,
+        release_time as releaseTime,
+        news_digest as newsDigest,
+        news_img as newsImg,
+        news_content as newsContent,
+        news_model as newsModel,
+        news_file_name as newsFileName,
+        news_file_path as newsFilePath,
+        news_video_name as newsVideoName,
+        news_video_path as newsVideoPath,
+        column_id as columnId,
+        top_level as topLevel,
+        top_level_time as topLevelTime,
+        news_push as newsPush,
+        del_flag as delFlag,
+        create_user as createUser,
+        create_time as createTime,
+        update_user as updateUser,
+        update_time as updateTime
+    </sql>
+
+
+    <select id="selectNews" resultType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from m_news
+        where 1=1
+        <if test="newsName != null and newsName != ''">
+            and news_name like CONCAT('%',#{newsName},'%')
+        </if>
+    </select>
+</mapper>

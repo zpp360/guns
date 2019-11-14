@@ -16,6 +16,7 @@
 package cn.stylefeng.guns.config.web;
 
 import cn.stylefeng.guns.config.properties.GunsProperties;
+import cn.stylefeng.guns.core.common.constant.Constants;
 import cn.stylefeng.guns.core.common.controller.GunsErrorView;
 import cn.stylefeng.guns.core.interceptor.AttributeSetInteceptor;
 import cn.stylefeng.guns.core.interceptor.RestApiInteceptor;
@@ -37,11 +38,13 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.io.FileNotFoundException;
 import java.util.Properties;
 
 import static cn.stylefeng.guns.core.common.constant.Const.NONE_PERMISSION_RES;
@@ -72,6 +75,19 @@ public class WebConfig implements WebMvcConfigurer {
 
         //本应用
         registry.addResourceHandler("/assets/**").addResourceLocations("classpath:/assets/");
+        //添加jar同目录下upload文件地址
+        String uploadPath = null;
+        try {
+            uploadPath = ResourceUtils.getURL("classpath:application.yml").getPath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        int result = uploadPath.lastIndexOf("/guns.jar!/");
+        if(result > -1){
+            //虚拟路径不能去掉file:
+            uploadPath = uploadPath.substring(0,result)+ Constants.UPLOAD_PATH;
+            registry.addResourceHandler("/upload/**").addResourceLocations(uploadPath);
+        }
     }
 
     /**

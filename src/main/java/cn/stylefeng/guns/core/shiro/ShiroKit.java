@@ -344,7 +344,6 @@ public class ShiroKit {
         shiroUser.setPlazaId(user.getPlazaId());
         shiroUser.setPlazaAdmin(user.isPlazaAdmin());
 
-
         return shiroUser;
     }
 

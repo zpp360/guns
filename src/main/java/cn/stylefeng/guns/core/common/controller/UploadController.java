@@ -4,6 +4,7 @@ import cn.stylefeng.guns.core.common.constant.Constants;
 import cn.stylefeng.guns.core.util.UUIDUtil;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,9 +66,9 @@ public class UploadController extends BaseController {
                 // 对原文件名进行重命名
                 fileName = UUIDUtil.uuid() + "." + fileExt;
                 // 返回图片路径
-                String rootPath = request.getServletContext().getRealPath("/");
-                imgPath = Constants.IMG_PATH + fileName;
-                File dic = new File(rootPath + Constants.IMG_PATH);
+                String rootPath = getRootPath(request);
+                imgPath = Constants.NEWS_PATH + fileName;
+                File dic = new File(rootPath + Constants.NEWS_PATH);
                 if(!dic.exists()){
                     dic.mkdirs();
                 }
@@ -79,6 +81,31 @@ public class UploadController extends BaseController {
             }
         }
         return data;
+    }
+
+    /**
+     * 获取根路径，jar包获取同目录下upload路径
+     * @param request
+     * @return
+     */
+    public static String getRootPath(HttpServletRequest request){
+        String uploadPath = null;
+        try {
+            uploadPath = ResourceUtils.getURL("classpath:application.yml").getPath();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        int result = uploadPath.lastIndexOf("/guns.jar!/");
+        if(result > -1){
+            uploadPath = uploadPath.substring(0,result);
+            //路径去掉file:
+            if(uploadPath.contains("file:")){
+                uploadPath = uploadPath.substring(5);
+            }
+        }else{
+            uploadPath = request.getServletContext().getRealPath("/");
+        }
+        return uploadPath;
     }
 
 }

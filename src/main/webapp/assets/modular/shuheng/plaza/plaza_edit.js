@@ -47,7 +47,7 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     var result = ajax.start();
     //回显图片
     if(result.data.plazaImg!=""){
-        $("#imgShow").attr("src",result.data.plazaImg );
+        $("#imgShow").attr("src",Feng.ctxPath + result.data.plazaImg );
     }
     form.val('plazaForm', result.data);
 

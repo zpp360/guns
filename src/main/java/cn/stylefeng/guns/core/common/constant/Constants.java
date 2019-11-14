@@ -1,5 +1,7 @@
 package cn.stylefeng.guns.core.common.constant;
 
+import java.io.File;
+
 public class Constants {
     public static final String JPG = "jpg";
     public static final String PNG = "png";
@@ -13,5 +15,8 @@ public class Constants {
     //	100 M
     public static final double ONE_HUNDRED_MB = 100 * 1024 * 1024;
 
-    public static final String IMG_PATH = "/upload/img/";
+    public static final String UPLOAD_PATH = File.separator + "upload" + File.separator;
+    public static final String NEWS_PATH = File.separator + "upload" + File.separator + "news" + File.separator;
+    public static final String UEDITOR_PATH = File.separator + "upload" + File.separator + "ueditor" + File.separator;
+
 }

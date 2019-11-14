@@ -1,6 +1,8 @@
 server:
   port: 80
   max-http-header-size: 10240
+  servlet:
+    context-path: /
 
 guns:
   swagger-open: true                #是否开启swagger (true/false)

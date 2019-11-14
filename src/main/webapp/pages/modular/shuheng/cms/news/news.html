@@ -1,0 +1,43 @@
+@layout("/common/_container.html",{plugins:["ztree"],js:["/assets/modular/shuheng/cms/news/news.js"]}){
+
+<div class="layui-body-header">
+    <span class="layui-body-header-title">管理</span>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm12 layui-col-md3 layui-col-lg2">
+            <div class="layui-card">
+                <div class="layui-card-body mini-bar">
+                    <div class="ztree" id="columnTree"></div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm12 layui-col-md12 layui-col-lg10">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-form toolbar">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <input id="newsTitle" class="layui-input" type="text" placeholder="标题" autocomplete="off"/>
+                            </div>
+                            <div class="layui-inline">
+                                <button id="btnSearch" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                <button id="btnAddNews" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>新闻</button>
+                                <button id="btnAddVideo" class="layui-btn icon-btn"><i class="layui-icon">&#xe6ed;</i>视频</button>
+                                <button id="btnAddDownload" class="layui-btn icon-btn"><i class="layui-icon">&#xe601;</i>下载</button>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="layui-table" id="newsTable" lay-filter="newsTable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="tableBar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+</script>
+@}
