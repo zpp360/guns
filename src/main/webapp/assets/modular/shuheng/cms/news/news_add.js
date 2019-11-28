@@ -1,10 +1,13 @@
-layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
+layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload','element'], function () {
     var $ = layui.jquery;
     var $ax = layui.ax;
     var form = layui.form;
     var admin = layui.admin;
     var upload = layui.upload;
+    var laydate = layui.laydate;
+    var element = layui.element;
 
+    progressHide()
 
     //根据不同模型控制显示隐藏项
     var newsModel = $("#newsModel").val()
@@ -20,6 +23,13 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
     if(newsModel=="download"){
         $("#modelVideo").hide()
     }
+
+    // 渲染时间选择框
+    laydate.render({
+        elem: '#releaseTime'
+        ,trigger : 'click',
+        type:"datetime"
+    });
 
     //普通图片上传
     var uploadInst = upload.render({
@@ -53,6 +63,90 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
         }
     });
 
+    var timer = null;
+
+    upload.render({
+        elem: '#newsVideoUpload'
+        ,url: Feng.ctxPath + '/upload/uploadVideo'
+        ,accept: 'video' //视频
+        ,before:function () {
+            uploadBtnDisable("newsVideoUpload")
+            setProgress(0)
+            progressShow()
+            timer = setInterval(function () {
+                var ajax = new $ax(Feng.ctxPath + "/upload/uploadStatus", function (result) {
+                    console.log(result)
+                    element.progress("progress",result+"%")
+                })
+                ajax.start()
+            },500)
+        }
+        ,done: function(res){
+            clearInterval(timer)
+            //上传成功清除interval
+            //如果上传失败
+            if(res.code > 0){
+                setProgress(0)
+                progressHide()
+                uploadBtnAble("newsVideoUpload")
+                return layer.msg('上传失败' + res.msg);
+            }
+            //上传成功 newsVideoSpan
+            $("#newsVideoSpan").text(res.video_name);
+            $("#newsVideoName").val(res.video_name);
+            $("#newsVideoPath").val(res.video_path);
+            setProgress(100)
+            uploadBtnAble("newsVideoUpload")
+        }
+        ,error:function () {
+            setProgress(0)
+            progressHide()
+            uploadBtnAble("newsVideoUpload")
+        }
+    });
+
+
+    upload.render({
+        elem: '#newsFileUpload'
+        ,url: Feng.ctxPath + '/upload/uploadFile'
+        ,accept: 'file' //文件
+        ,exts:'txt|zip|rar|doc|docx|pdf|ppt|pptx|xls|xlsx'
+        ,before:function () {
+            uploadBtnDisable("newsFileUpload")
+            setProgress(0)
+            progressShow()
+            timer = setInterval(function () {
+                var ajax = new $ax(Feng.ctxPath + "/upload/uploadStatus", function (result) {
+                    console.log(result)
+                    element.progress("progress",result+"%")
+                })
+                ajax.start()
+            },500)
+        }
+        ,done: function(res){
+            clearInterval(timer)
+            //上传成功清除interval
+            //如果上传失败
+            if(res.code > 0){
+                setProgress(0)
+                progressHide()
+                uploadBtnAble("newsFileUpload")
+                return layer.msg('上传失败' + res.msg);
+            }
+            //上传成功 newsVideoSpan
+            $("#newsFileSpan").text(res.file_name);
+            $("#newsFileName").val(res.file_name);
+            $("#newsFilePath").val(res.file_path);
+            setProgress(100)
+            uploadBtnAble("newsFileUpload")
+        }
+        ,error:function () {
+            setProgress(0)
+            progressHide()
+            uploadBtnAble("newsFileUpload")
+        }
+    });
+
     // 让当前iframe弹层高度适应
     admin.iframeAuto();
 
@@ -75,7 +169,38 @@ layui.use(['layer', 'form', 'admin', 'laydate', 'ax','upload'], function () {
             Feng.error("添加失败！" + data.responseJSON.message)
         });
         ajax.set(data.field);
-        ajax.set("newsModel","${newsModel}")
         ajax.start();
     });
+
+    /**
+     * 显示进度条
+     */
+    function progressShow(){
+        $(".layui-progress").show()
+    }
+
+    /**
+     * 隐藏进度条
+     */
+    function progressHide() {
+        $(".layui-progress").hide()
+    }
+
+    /**
+     * 设计进度
+     * @param num
+     */
+    function setProgress(num){
+        element.progress("progress",num+"%")
+    }
+
+    function uploadBtnDisable(id){
+        $("#"+id).addClass("layui-btn-disabled")
+        $("#"+id).attr("disabled","disabled")
+    }
+
+    function uploadBtnAble(id){
+        $("#"+id).removeClass("layui-btn-disabled")
+        $("#"+id).removeAttr("disabled")
+    }
 });

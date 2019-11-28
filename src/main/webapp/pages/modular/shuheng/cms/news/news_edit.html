@@ -1,128 +1,76 @@
-@layout("/common/_container.html",{bg:"bg-white",js:["/assets/modular/shuheng/cms/news/news_edit.js?v=1"]}){
-<style type="text/css">
-    .layui-upload-list{
-        margin-left: 110px;
-    }
-    #imgShow{
-        width: 92px;
-        height: 92px;
-        margin: 0 10px 10px 0px;
-    }
+@layout("/common/_container.html",{bg:"bg-white",plugins:["ueditor"],js:["/assets/modular/shuheng/cms/news/news_edit.js?v=1"]}){
 
-</style>
-<form id="newsForm" lay-filter="newsForm" class="layui-form model-form" style="max-width: 700px;">
+<form id="newsForm" lay-filter="newsForm" class="layui-form model-form" style="max-width: 860px;">
 
-
-         <input type="hidden" name="newsId"/>
-         <div class="layui-form-item">
-             <label class="layui-form-label">标题<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsTitle" name="newsTitle" maxlength="30" placeholder="请输入标题" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">来源<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsSource" name="newsSource" maxlength="30" placeholder="请输入来源" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">发布时间<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="releaseTime" name="releaseTime" maxlength="30" placeholder="请输入发布时间" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">摘要<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsDigest" name="newsDigest" maxlength="30" placeholder="请输入摘要" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">标题图<span style="color: red;">*</span></label>
-             <div class="layui-upload">
-                 <button type="button" class="layui-btn" id="uploadImg">上传标题图</button>
-                 <div class="layui-upload-list">
-                     <img class="layui-upload-img" id="imgShow">
-                     <p id="imgText"></p>
-                 </div>
-             </div>
-             <input type="hidden" id="newsImg" name="newsImg" placeholder="" type="text" class="layui-input" lay-verify="" />
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">内容<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsContent" name="newsContent" maxlength="30" placeholder="请输入内容" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">模型news新闻video视频download下载<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsModel" name="newsModel" maxlength="30" placeholder="请输入模型news新闻video视频download下载" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">附件名称<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">附件路径<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsFilePath" name="newsFilePath" maxlength="30" placeholder="请输入附件路径" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">视频名称<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsVideoName" name="newsVideoName" maxlength="30" placeholder="请输入视频名称" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">视频路径<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsVideoPath" name="newsVideoPath" maxlength="30" placeholder="请输入视频路径" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">栏目<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="columnId" name="columnId" maxlength="30" placeholder="请输入栏目" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">固定级别<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="topLevel" name="topLevel" maxlength="30" placeholder="请输入固定级别" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label">固定级别到期时间<span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="topLevelTime" name="topLevelTime" maxlength="30" placeholder="请输入固定级别到期时间" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-         <div class="layui-form-item">
-             <label class="layui-form-label"><span style="color: red;">*</span></label>
-             <div class="layui-input-block">
-                 <input id="newsPush" name="newsPush" maxlength="30" placeholder="请输入" type="text" class="layui-input"
-                        lay-verify="required" required/>
-             </div>
-         </div>
-
+    <input type="hidden" name="newsId"/>
+    <input type="hidden" name="newsModel" id="newsModel">
+    <input type="hidden" name="columnId">
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="newsTitle" name="newsTitle" maxlength="200" placeholder="请输入标题" type="text" class="layui-input"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">标题图</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="uploadImg">上传标题图</button>
+            <div class="layui-upload-list">
+                <img class="layui-upload-img" id="imgShow">
+                <p id="imgText"></p>
+            </div>
+        </div>
+        <input type="hidden" id="newsImg" name="newsImg" placeholder="" type="text" class="layui-input" lay-verify="" />
+    </div>
+    <div class="layui-form-item" id="modelDownload">
+        <label class="layui-form-label">附件<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="newsFileName" name="newsFileName" maxlength="100"  type="hidden" />
+            <input id="newsFilePath" name="newsFilePath" maxlength="200"  type="hidden" />
+            <button type="button" class="layui-btn" id="newsFileUpload"><i class="layui-icon"></i>上传文件(限制100M)</button>
+            <span id="newsFileSpan"></span>
+            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="progress">
+                <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" id="modelVideo">
+        <label class="layui-form-label">视频<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <input id="newsVideoName" name="newsVideoName" maxlength="100"  type="hidden" />
+            <input id="newsVideoPath" name="newsVideoPath" maxlength="200"  type="hidden" />
+            <button type="button" class="layui-btn" id="newsVideoUpload"><i class="layui-icon"></i>上传视频(限制100M)</button>
+            <span id="newsVideoSpan"></span>
+            <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="progress">
+                <div class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内容<span style="color: red;">*</span></label>
+        <div class="layui-input-block">
+            <textarea id="editor" name="newsContent" style="width: 750px;height: 300px;"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">摘要</label>
+        <div class="layui-input-block">
+            <input id="newsDigest" name="newsDigest" maxlength="30" placeholder="默认取内容前200个字符" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">来源</label>
+        <div class="layui-input-block">
+            <input id="newsSource" name="newsSource" maxlength="50" placeholder="默认为纪念馆名称" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-block">
+            <input id="releaseTime" name="releaseTime" maxlength="30" placeholder="默认为当前时间" type="text" class="layui-input"/>
+        </div>
+    </div>
 
 
     <div class="layui-form-item text-right">
@@ -130,6 +78,5 @@
         <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog" id="backupPage">返回</button>
     </div>
 </form>
-
 
 @}

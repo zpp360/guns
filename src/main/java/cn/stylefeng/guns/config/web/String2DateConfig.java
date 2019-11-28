@@ -1,6 +1,6 @@
 package cn.stylefeng.guns.config.web;
 
-import cn.hutool.core.date.DateUtil;
+import cn.stylefeng.guns.core.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;

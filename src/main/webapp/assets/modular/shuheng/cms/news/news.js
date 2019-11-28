@@ -15,18 +15,24 @@ layui.use(['table', 'admin', 'ax', 'ztree'], function () {
         }
     };
 
+    /**
+     * 选择栏目时
+     * 放在ztree初始化上边，要不找不到方法
+     */
+    News.onClickColumn = function (e, treeId, treeNode) {
+        if(treeNode.id=='0'){
+            News.condition.columnId = ""
+        }else{
+            News.condition.columnId = treeNode.id;
+        }
+        News.search();
+    };
+
     //初始化左侧栏目树
     var ztree = new $ZTree("columnTree", "/column/selectColumnTreeList");
     ztree.bindOnClick(News.onClickColumn);
     ztree.init();
 
-    /**
-     * 选择栏目时
-     */
-    News.onClickColumn = function (e, treeId, treeNode) {
-        News.condition.columnId = treeNode.id;
-        News.search();
-    };
 
     /**
     * 初始化表格的列
@@ -39,7 +45,7 @@ layui.use(['table', 'admin', 'ax', 'ztree'], function () {
             {field: 'newsSource', sort: false, title: '来源'},
             {field: 'releaseTime', sort: false, title: '发布时间'},
             {field: 'newsModel', sort: false, title: '模型'},
-            {field: 'columnId', sort: false, title: '栏目'},
+            {field: 'columnName', sort: false, title: '栏目'},
             {field: 'topLevel', sort: false, title: '固定级别'},
             {field: 'topLevelTime', sort: false, title: '固定到期时间'},
             {field: 'newsPush', sort: false, title: '推荐'},
@@ -80,12 +86,16 @@ layui.use(['table', 'admin', 'ax', 'ztree'], function () {
     })
     //添加
     News.openAdd = function (model) {
+        if(News.condition.columnId==""){
+            Feng.error("请选择栏目！")
+            return
+        }
         admin.putTempData('formOk', false);
         top.layui.admin.open({
             type: 2,
             title: '添加',
             area:['900px'],
-            content: Feng.ctxPath + '/news/news_add?newsModel='+model,
+            content: Feng.ctxPath + '/news/news_add?newsModel='+model+'&columnId='+News.condition.columnId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(News.tableId);
             }
@@ -97,6 +107,7 @@ layui.use(['table', 'admin', 'ax', 'ztree'], function () {
         top.layui.admin.open({
             type: 2,
             title: '编辑',
+            area:['900px'],
             content: Feng.ctxPath + '/news/news_edit?newsId=' + data.newsId,
             end: function () {
                 admin.getTempData('formOk') && table.reload(News.tableId);
@@ -123,7 +134,7 @@ layui.use(['table', 'admin', 'ax', 'ztree'], function () {
         ajax.set("newsId", data.newsId);
         ajax.start();
         };
-        Feng.confirm("是否删除菜单" + data.newsName + "?", operation);
+        Feng.confirm("是否删除菜单" + data.newsTitle + "?", operation);
     }
 
     // 工具条点击事件

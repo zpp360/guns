@@ -19,8 +19,8 @@ import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
  */
 @Service
 public class NewsService extends ServiceImpl<NewsMapper,News> {
-   public Page<Map<String,Object>> listNews(String newsName) {
+   public Page<Map<String,Object>> listNews(String newsName,String columnId) {
       Page page = LayuiPageFactory.defaultPage();
-      return this.baseMapper.selectNews(page,newsName);
+      return this.baseMapper.selectNews(page,newsName,columnId);
    }
 }

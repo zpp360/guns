@@ -16,5 +16,5 @@ import java.util.Map;
  * @since 2019-11-05
  */
 public interface NewsMapper extends BaseMapper<News> {
-   Page<Map<String, Object>> selectNews(@Param("page") Page page, @Param("newsName") String newsName);
+   Page<Map<String, Object>> selectNews(@Param("page") Page page, @Param("newsName") String newsName,@Param("columnId") String columnId);
 }

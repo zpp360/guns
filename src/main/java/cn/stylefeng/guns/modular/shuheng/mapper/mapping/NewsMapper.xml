@@ -30,37 +30,41 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        news_id as newsId,
-        news_title as newsTitle,
-        news_source as newsSource,
-        release_time as releaseTime,
-        news_digest as newsDigest,
-        news_img as newsImg,
-        news_content as newsContent,
-        news_model as newsModel,
-        news_file_name as newsFileName,
-        news_file_path as newsFilePath,
-        news_video_name as newsVideoName,
-        news_video_path as newsVideoPath,
-        column_id as columnId,
-        top_level as topLevel,
-        top_level_time as topLevelTime,
-        news_push as newsPush,
-        del_flag as delFlag,
-        create_user as createUser,
-        create_time as createTime,
-        update_user as updateUser,
-        update_time as updateTime
+        t.news_id as newsId,
+        t.news_title as newsTitle,
+        t.news_source as newsSource,
+        t.release_time as releaseTime,
+        t.news_digest as newsDigest,
+        t.news_img as newsImg,
+        t.news_content as newsContent,
+        t.news_model as newsModel,
+        t.news_file_name as newsFileName,
+        t.news_file_path as newsFilePath,
+        t.news_video_name as newsVideoName,
+        t.news_video_path as newsVideoPath,
+        t.column_id as columnId,
+        t.top_level as topLevel,
+        t.top_level_time as topLevelTime,
+        t.news_push as newsPush,
+        t.del_flag as delFlag,
+        c.column_name as columnName,
+        t.create_user as createUser,
+        t.create_time as createTime,
+        t.update_user as updateUser,
+        t.update_time as updateTime
     </sql>
 
 
     <select id="selectNews" resultType="map">
         select
         <include refid="Base_Column_List"/>
-        from m_news
-        where 1=1
+        from m_news t,m_column c
+        where t.column_id = c.column_id
         <if test="newsName != null and newsName != ''">
-            and news_name like CONCAT('%',#{newsName},'%')
+            and t.news_name like CONCAT('%',#{newsName},'%')
+        </if>
+        <if test="columnId != null and columnId != ''">
+            and (c.column_id = #{columnId} or c.column_path like '${columnId}|%' or c.column_path like '%|${columnId}|%')
         </if>
     </select>
 </mapper>

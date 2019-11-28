@@ -27,8 +27,10 @@ spring:
       exclude: assets/**,pages/**
   servlet:
     multipart:
+      enabled: false
       max-request-size: 100MB
       max-file-size: 100MB
+
 
 mybatis-plus:
   typeAliasesPackage: cn.stylefeng.guns.modular.system.model

@@ -7,13 +7,18 @@ import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.modular.shuheng.entity.News;
+import cn.stylefeng.guns.modular.shuheng.entity.Plaza;
 import cn.stylefeng.guns.modular.shuheng.service.NewsService;
+import cn.stylefeng.guns.modular.shuheng.service.PlazaService;
+import cn.stylefeng.guns.modular.shuheng.warpper.NewsWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
 import cn.stylefeng.roses.core.util.ToolUtil;
 import cn.stylefeng.roses.kernel.model.exception.RequestEmptyException;
 import cn.stylefeng.roses.kernel.model.exception.ServiceException;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +28,6 @@ import java.util.Map;
 import java.util.Date;
 
 import org.springframework.stereotype.Controller;
-import cn.stylefeng.roses.core.base.controller.BaseController;
 
 /**
  * <p>
@@ -42,6 +46,9 @@ public class NewsController extends BaseController {
    @Autowired
    private NewsService  newsService;
 
+   @Autowired
+   private PlazaService plazaService;
+
    @RequestMapping("")
    public String index(){
       return PREFIX + "news.html";
@@ -49,14 +56,17 @@ public class NewsController extends BaseController {
 
    @RequestMapping("/list")
    @ResponseBody
-   public Object list(@RequestParam(value = "newsName", required = false) String newsName){
-      Page<Map<String,Object>> page = newsService.listNews(newsName);
+   public Object list(@RequestParam(value = "newsName", required = false) String newsName,
+                      @RequestParam(value = "columnId", required = false) String columnId){
+      Page<Map<String,Object>> page = newsService.listNews(newsName,columnId);
+      page = new NewsWrapper(page).wrap();
       return LayuiPageFactory.createPageInfo(page);
    }
 
    @RequestMapping("/news_add")
-   public String addView(@RequestParam(value = "newsModel") String newsModel,Model model) {
+   public String addView(@RequestParam(value = "newsModel") String newsModel,@RequestParam(value = "columnId") String columnId, Model model) {
       model.addAttribute("newsModel",newsModel);
+      model.addAttribute("columnId",columnId);
       return PREFIX + "news_add.html";
    }
 
@@ -67,6 +77,16 @@ public class NewsController extends BaseController {
       if (news == null) {
          throw new RequestEmptyException();
       }
+      if(ToolUtil.isEmpty(news.getReleaseTime())){
+         news.setReleaseTime(new Date());
+      }
+      if(ToolUtil.isEmpty(news.getNewsSource()) && user.isPlazaAdmin()){
+         Plaza plaza = plazaService.getById(user.getPlazaId());
+         news.setNewsSource(plaza.getPlazaName());
+      }
+
+      setDigest(news);
+
       this.newsService.save(news);
       return SUCCESS_TIP;
    }
@@ -90,6 +110,9 @@ public class NewsController extends BaseController {
       if (news == null) {
          throw new RequestEmptyException();
       }
+
+      setDigest(news);
+
       this.newsService.updateById(news);
       return SUCCESS_TIP;
    }
@@ -118,5 +141,25 @@ public class NewsController extends BaseController {
       }
       this.newsService.removeById(newsId);
       return SUCCESS_TIP;
+   }
+
+   /**
+    * 设置摘要
+    * @param news
+    */
+   private void setDigest(News news){
+      if(ToolUtil.isEmpty(news.getNewsDigest())){
+         String html = news.getNewsContent();
+         Document doc = Jsoup.parse(html);
+         String text = doc.text();
+         if (text.length() > 200) {
+            text = text.substring(0, 200);
+         }
+         news.setNewsDigest(text);
+      }else{
+         if(news.getNewsDigest().length()>200){
+            news.setNewsDigest(news.getNewsDigest().substring(0, 200));
+         }
+      }
    }
 }
