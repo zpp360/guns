@@ -6,6 +6,7 @@ import cn.stylefeng.guns.core.common.page.LayuiPageFactory;
 import cn.stylefeng.guns.core.log.LogObjectHolder;
 import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
+import cn.stylefeng.guns.core.util.FileUtil;
 import cn.stylefeng.guns.modular.shuheng.entity.News;
 import cn.stylefeng.guns.modular.shuheng.entity.Plaza;
 import cn.stylefeng.guns.modular.shuheng.service.NewsService;
@@ -24,10 +25,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.File;
 import java.util.Map;
 import java.util.Date;
 
 import org.springframework.stereotype.Controller;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -135,10 +140,43 @@ public class NewsController extends BaseController {
    */
    @RequestMapping(value = "/delete")
    @ResponseBody
-   public ResponseData delete(@RequestParam Long newsId) {
+   public ResponseData delete(@RequestParam Long newsId, HttpServletRequest request) {
       if (ToolUtil.isEmpty(newsId)) {
          throw new ServiceException(BizExceptionEnum.REQUEST_NULL);
       }
+
+      News news = newsService.getById(newsId);
+      if(news!=null){
+         String rootPath = FileUtil.getRootPath(request);
+         if(ToolUtil.isNotEmpty(news.getNewsImg())){
+            //删除图片
+            String path = FileUtil.url2Path(news.getNewsImg());
+            File imgFile = new File(rootPath + path);
+            if(imgFile.exists() && imgFile.isFile()){
+               imgFile.delete();
+            }
+         }
+
+         if(ToolUtil.isNotEmpty(news.getNewsFilePath())){
+            //删除附件
+            String path = FileUtil.url2Path(news.getNewsFilePath());
+            File file = new File(rootPath + path);
+            if(file.exists() && file.isFile()){
+               file.delete();
+            }
+         }
+
+         if(ToolUtil.isNotEmpty(news.getNewsVideoPath())){
+            //删除视频
+            String path = FileUtil.url2Path(news.getNewsVideoPath());
+            File videoFile = new File(rootPath + path);
+            if(videoFile.exists() && videoFile.isFile()){
+               videoFile.delete();
+            }
+         }
+
+      }
+
       this.newsService.removeById(newsId);
       return SUCCESS_TIP;
    }

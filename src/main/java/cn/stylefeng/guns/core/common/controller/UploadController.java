@@ -1,6 +1,7 @@
 package cn.stylefeng.guns.core.common.controller;
 
 import cn.stylefeng.guns.core.common.constant.Constants;
+import cn.stylefeng.guns.core.util.FileUtil;
 import cn.stylefeng.guns.core.util.UUIDUtil;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,7 @@ public class UploadController extends BaseController {
                 // 对原文件名进行重命名
                 fileName = UUIDUtil.uuid() + "." + fileExt;
                 // 返回图片路径
-                String rootPath = getRootPath(request);
+                String rootPath = FileUtil.getRootPath(request);
                 imgPath = Constants.NEWS_PATH + fileName;
                 File dic = new File(rootPath + Constants.NEWS_PATH);
                 if(!dic.exists()){
@@ -141,7 +142,7 @@ public class UploadController extends BaseController {
                 // 对原文件名进行重命名
                 fileName = UUIDUtil.uuid() + "." + fileExt;
                 // 返回图片路径
-                String rootPath = getRootPath(request);
+                String rootPath = FileUtil.getRootPath(request);
                 videoPath = Constants.NEWS_PATH + fileName;
                 File dic = new File(rootPath + Constants.NEWS_PATH);
                 if(!dic.exists()){
@@ -211,7 +212,7 @@ public class UploadController extends BaseController {
                 // 对原文件名进行重命名
                 fileName = UUIDUtil.uuid() + "." + fileExt;
                 // 返回图片路径
-                String rootPath = getRootPath(request);
+                String rootPath = FileUtil.getRootPath(request);
                 filePath = Constants.NEWS_PATH + fileName;
                 File dic = new File(rootPath + Constants.NEWS_PATH);
                 if(!dic.exists()){
@@ -228,30 +229,6 @@ public class UploadController extends BaseController {
         return data;
     }
 
-    /**
-     * 获取根路径，jar包获取同目录下upload路径
-     * @param request
-     * @return
-     */
-    public static String getRootPath(HttpServletRequest request){
-        String uploadPath = null;
-        try {
-            uploadPath = ResourceUtils.getURL("classpath:application.yml").getPath();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        int result = uploadPath.lastIndexOf("/guns.jar!/");
-        if(result > -1){
-            uploadPath = uploadPath.substring(0,result);
-            //路径去掉file:
-            if(uploadPath.contains("file:")){
-                uploadPath = uploadPath.substring(5);
-            }
-        }else{
-            uploadPath = request.getServletContext().getRealPath("/");
-        }
-        return uploadPath;
-    }
 
 
     @RequestMapping(value = "/uploadStatus")

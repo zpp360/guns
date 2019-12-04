@@ -67,6 +67,7 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
      * 栏目
      */
     EXIT_SUB_COLUMN(501,"请先删除下级栏目"),
+    EXIT_NEWS(503,"请先删除栏目下新闻"),
 
     /**
      * 错误的请求

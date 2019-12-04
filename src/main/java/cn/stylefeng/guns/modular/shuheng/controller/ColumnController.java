@@ -13,7 +13,9 @@ import cn.stylefeng.guns.core.shiro.ShiroKit;
 import cn.stylefeng.guns.core.shiro.ShiroUser;
 import cn.stylefeng.guns.modular.shuheng.dictmap.ColumnDict;
 import cn.stylefeng.guns.modular.shuheng.entity.Column;
+import cn.stylefeng.guns.modular.shuheng.entity.News;
 import cn.stylefeng.guns.modular.shuheng.service.ColumnService;
+import cn.stylefeng.guns.modular.shuheng.service.NewsService;
 import cn.stylefeng.guns.modular.shuheng.warpper.ColumnWrapper;
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import cn.stylefeng.roses.core.reqres.response.ResponseData;
@@ -52,6 +54,9 @@ public class ColumnController extends BaseController {
 
    @Autowired
    private ColumnService  columnService;
+
+   @Autowired
+   private NewsService newsService;
 
    @RequestMapping("")
    public String index(){
@@ -203,6 +208,15 @@ public class ColumnController extends BaseController {
       if(CollectionUtils.isNotEmpty(list)){
          throw new ServiceException(BizExceptionEnum.EXIT_SUB_COLUMN);
       }
+
+      //存在新闻，不允许删除
+      QueryWrapper<News> newsWrapper = new QueryWrapper<>();
+      newsWrapper.eq("column_id",columnId);
+      int newsCount = newsService.count(newsWrapper);
+      if(newsCount>0){
+         throw new ServiceException(BizExceptionEnum.EXIT_NEWS);
+      }
+
       this.columnService.removeById(columnId);
       return SUCCESS_TIP;
    }
